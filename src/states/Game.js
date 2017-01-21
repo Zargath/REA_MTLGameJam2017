@@ -14,6 +14,7 @@ export default class extends Phaser.State {
       asset: 'mushroom',
     });
 
+    this.game.add.sprite(0, 0, 'background');
     this.game.add.existing(this.waveman);
   }
 
