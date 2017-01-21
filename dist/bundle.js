@@ -6,7 +6,7 @@ webpackJsonp([0],[
 /***/ function(module, exports, __webpack_require__) {
 
 	__webpack_require__(/*! babel-polyfill */1);
-	module.exports = __webpack_require__(/*! C:\Users\alex.sanscartier\Documents\projects\GameJam\phaser-es6-webpack\src\main.js */298);
+	module.exports = __webpack_require__(/*! /Users/MellynDS/projects/gamedev/REA_MTLGameJam2017/src/main.js */298);
 
 
 /***/ },
@@ -8890,25 +8890,25 @@ webpackJsonp([0],[
 	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
 	var Game = function (_Phaser$Game) {
-	    _inherits(Game, _Phaser$Game);
+	  _inherits(Game, _Phaser$Game);
 
-	    function Game() {
-	        _classCallCheck(this, Game);
+	  function Game() {
+	    _classCallCheck(this, Game);
 
-	        var width = document.documentElement.clientWidth > 768 ? 768 : document.documentElement.clientWidth;
-	        var height = document.documentElement.clientHeight > 1024 ? 1024 : document.documentElement.clientHeight;
+	    var width = document.documentElement.clientWidth > 768 ? 768 : document.documentElement.clientWidth;
+	    var height = document.documentElement.clientHeight > 1024 ? 1024 : document.documentElement.clientHeight;
 
-	        var _this = _possibleConstructorReturn(this, (Game.__proto__ || Object.getPrototypeOf(Game)).call(this, width, height, _phaser2.default.AUTO, 'content', null));
+	    var _this = _possibleConstructorReturn(this, (Game.__proto__ || Object.getPrototypeOf(Game)).call(this, width, height, _phaser2.default.AUTO, 'content', null));
 
-	        _this.state.add('Boot', _Boot2.default, false);
-	        _this.state.add('Splash', _Splash2.default, false);
-	        _this.state.add('Game', _Game2.default, false);
+	    _this.state.add('Boot', _Boot2.default, false);
+	    _this.state.add('Splash', _Splash2.default, false);
+	    _this.state.add('Game', _Game2.default, false);
 
-	        _this.state.start('Boot');
-	        return _this;
-	    }
+	    _this.state.start('Boot');
+	    return _this;
+	  }
 
-	    return Game;
+	  return Game;
 	}(_phaser2.default.Game);
 
 	window.game = new Game();
@@ -8976,7 +8976,7 @@ webpackJsonp([0],[
 	        active: this.fontsLoaded
 	      });
 
-	      //Ignore web font load for now
+	      // Ignore web font load for now
 	      this.fontsReady = true;
 
 	      var text = this.add.text(this.world.centerX, this.world.centerY, 'loading fonts', { font: '16px Arial', fill: '#dddddd', align: 'center' });
@@ -9174,8 +9174,8 @@ webpackJsonp([0],[
 	    key: 'render',
 	    value: function render() {
 	      if (true) {
-	        this.game.debug.cameraInfo(this.game.camera, 32, 120, "#000000");
-	        this.game.debug.spriteInfo(this.mushroom, 32, 32, "#000000");
+	        this.game.debug.cameraInfo(this.game.camera, 32, 120, '#000000');
+	        this.game.debug.spriteInfo(this.mushroom, 32, 32, '#000000');
 	      }
 	    }
 	  }]);
