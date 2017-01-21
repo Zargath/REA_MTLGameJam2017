@@ -15,7 +15,7 @@ export default class extends Phaser.State {
     //
     this.load.image('mushroom', 'assets/images/mushroom2.png');
     this.load.image('waveman_bullet_blue', 'assets/images/waveman_bullet_blue.png');
-    this.load.image('background', 'assets/images/Starbasesnow.png');
+    this.load.image('background', 'assets/images/starfield.png');
   }
 
   create() {

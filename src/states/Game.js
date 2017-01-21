@@ -2,6 +2,7 @@
 import Phaser from 'phaser';
 import Blob from '../sprites/Blob';
 import Waveman from '../sprites/Waveman';
+import Background from '../sprites/Background';
 
 export default class extends Phaser.State {
   init() { }
@@ -9,7 +10,7 @@ export default class extends Phaser.State {
 
   create() {
     // Add background
-    this.game.add.sprite(0, 0, 'background');
+    this.addBackground();
 
     // Timers in ms
     const blobTimekeeper = 1500;
@@ -47,6 +48,11 @@ export default class extends Phaser.State {
   logCollision(bullet, enemy) {
     enemy.kill();
     bullet.kill();
+  }
+
+  addBackground() {
+    const background = new Background({ game: this.game });
+    this.game.add.existing(background);
   }
 
   addPlayer() {
