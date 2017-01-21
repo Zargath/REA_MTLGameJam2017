@@ -9,14 +9,15 @@ export default class extends Phaser.State {
   preload() { }
 
   create() {
+    // Setup board
+    this.game.world.setBounds(-1000, -1000, 2000, 2000);
+
     // Add background
     this.addBackground();
 
     // Timers in ms
     const blobTimekeeper = 1500;
     const dificultyTikekeeper = 100;
-
-    this.game.physics.startSystem(Phaser.Physics.P2JS);
 
     // Sprite Groups
     this.player = this.game.add.group();
@@ -34,8 +35,6 @@ export default class extends Phaser.State {
 
     // Create player
     this.addPlayer();
-
-    this.game.physics.p2.enable(this.player.children[0].bullets);
 
     // Start the state!
     this.stateTimer.start();
@@ -56,13 +55,7 @@ export default class extends Phaser.State {
   }
 
   addPlayer() {
-    const waveman = new Waveman({
-      game: this.game,
-      x: this.game.world.centerX,
-      y: this.game.world.centerY,
-      asset: 'waveman',
-    });
-
+    const waveman = new Waveman({ game: this.game });
     this.player.add(waveman);
   }
 
@@ -83,9 +76,5 @@ export default class extends Phaser.State {
     }
   }
 
-  render() {
-    // if (__DEV__) {
-
-    // }
-  }
+  render() {  }
 }
