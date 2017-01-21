@@ -3,7 +3,7 @@ import Phaser from 'phaser';
 import Blob from '../sprites/Blob';
 import Waveman from '../sprites/Waveman';
 import Background from '../sprites/Background';
-import ScoreManager from '../managers/ScoreManager';
+import HUDManager from '../managers/HUDManager';
 
 export default class extends Phaser.State {
   init() { }
@@ -13,10 +13,9 @@ export default class extends Phaser.State {
     // Add background
     this.addBackground();
 
-    // Add score manager
-    this.scoreManager = new ScoreManager();
-    this.scoreText = this.game.add.text(200, 100, this.scoreManager.getScoreString());
-    this.font = 'Nunito';
+    // Add the hud manager
+    this.hudManager = new HUDManager({ game: this.game });
+    this.hudManager.initialize();
 
     // Timers in ms
     const blobTimekeeper = 1500;
@@ -48,13 +47,15 @@ export default class extends Phaser.State {
   }
 
   update() {
-    this.game.physics.arcade.collide(this.player.children[0].bullets, this.enemies, this.logCollision);
-    this.scoreText.text = this.scoreManager.getScoreString();
+    this.game.physics.callbackContext = this;
+    this.game.physics.arcade.collide(this.player.children[0].bullets, this.enemies, this.logCollision, null, this);
+    this.hudManager.update();
   }
 
   logCollision(bullet, enemy) {
     enemy.kill();
     bullet.kill();
+    this.hudManager.getManager('score').increaseEnemyKillCount();
   }
 
   addBackground() {
