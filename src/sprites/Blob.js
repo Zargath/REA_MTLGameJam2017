@@ -16,4 +16,12 @@ export default class extends Phaser.Sprite {
       y: this.game.world.randomY,
     }, 1750, Phaser.Easing.Quadratic.InOut, true);
   }
+
+  dies() {
+    this.kill();
+    if (typeof this.game.deathCircleManager != 'undefined') {
+      this.game.deathCircleManager.pushAway(10);
+    }
+
+  }
 }

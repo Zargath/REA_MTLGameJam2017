@@ -26,22 +26,23 @@ export default class {
                     asset: 'deathCircle',
                 }
             );
-
             this.deathCircles.push(deathCircle);
-            game.physics.enable(deathCircle, Phaser.Physics.ARCADE);
             this.game.add.existing(deathCircle);
 
+            this.game.physics.arcade.collide(this.player, deathCircle, this.killPlayer);
+
         }
-        this.deathCircleActivation = this.game.time.events.loop(Phaser.Timer.SECOND * 0.01, this.generateDeathCircle, this);
+        this.deathCircleActivation = this.game.time.events.loop(Phaser.Timer.SECOND * 0.005, this.generateDeathCircle, this);
         this.deathCircleActivation.timer.start();
     }
 
     pushAway(distance) {
-        this.test += 0.001 * distance;
+        this.test -= 0.001 * distance;
     }
 
     pullIn(distance) {
-        this.test -= 0.001 * distance;
+
+                this.test += 0.001 * distance;
     }
 
     generateDeathCircle() {
@@ -62,7 +63,7 @@ export default class {
             this.deathCircles[i].tint = this.rgbToHex(colorModificationRed, colorModificationGreen, 255);
             //this.deathCircles[i].tint = this.rgbToHex(0, 255, 0);
             //this.deathCircles[i].tint = this.rgbToHex(0, 0, 0);       
-*/
+            */
             if (radius < 150) {
                 this.deathCircles[i].tint = this.rgbToHex(255, 0, 0);
 

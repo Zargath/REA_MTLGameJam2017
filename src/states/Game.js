@@ -11,38 +11,6 @@ export default class extends Phaser.State {
   preload() { }
 
   create() {
-    game.physics.startSystem(Phaser.Physics.ARCADE);
-
-    this.deathCircleManager = new DeathCircleManager(
-      {
-        game: this.game,
-        startingRadius: 500,
-        dots: 200
-      }
-    );
-
-    this.deathCircleManager.initialize();
-
-    this.upKey = game.input.keyboard.addKey(Phaser.Keyboard.UP);
-    this.downKey = game.input.keyboard.addKey(Phaser.Keyboard.DOWN);
-    this.leftKey = game.input.keyboard.addKey(Phaser.Keyboard.LEFT);
-    this.rightKey = game.input.keyboard.addKey(Phaser.Keyboard.RIGHT);
-  }
-
-  update(){
-    
-    if (this.upKey.isDown)
-    {
-        this.deathCircleManager.pullIn(3);
-    }
-    else if (this.downKey.isDown)
-    {
-        this.deathCircleManager.pushAway(3);
-    }
-  }
-
-  render() {
-    if (__DEV__) {
     // Setup board
     this.game.world.setBounds(-1000, -1000, 2000, 2000);
 
@@ -72,20 +40,49 @@ export default class extends Phaser.State {
 
     // Start the state!
     this.stateTimer.start();
+
+    this.addDeathCircle();
+
+    this.game.physics.startSystem(Phaser.Physics.ARCADE);
   }
 
   update() {
-    this.game.physics.arcade.collide(this.player.bullets, this.enemies, this.logCollision);
+    this.game.physics.arcade.collide(this.player.bullets, this.enemies, this.logCollision, null, this);
+
+    for (var i = 0; i < this.deathCircleManager.deathCircles.length; i++) {
+          this.game.physics.arcade.collide(this.player, this.deathCircleManager.deathCircles[i], this.playerDeathCircleCollision, null, this);
+    }
+  }
+
+  render() {
+
   }
 
   logCollision(bullet, enemy) {
-    enemy.kill();
+    enemy.dies()
     bullet.kill();
+    this.deathCircleManager.pushAway(50);
+  }
+
+  playerDeathCircleCollision(player, deathCircle){
+    this.game.state.start("Splash");
   }
 
   addBackground() {
     const background = new Background({ game: this.game });
     this.game.add.existing(background);
+  }
+
+  addDeathCircle() {
+    this.deathCircleManager = new DeathCircleManager(
+      {
+        game: this.game,
+        startingRadius: 1000,
+        dots: 200
+      }
+    );
+
+    this.deathCircleManager.initialize();
   }
 
   addPlayer() {
@@ -107,10 +104,9 @@ export default class extends Phaser.State {
   increaseDificulty() {
     if (this.blobLoop.delay > 300) {
       this.blobLoop.delay -= 5;
->>>>>>> master
     }
   }
 
-  render() { 
-   }
+  render() {
+  }
 }
