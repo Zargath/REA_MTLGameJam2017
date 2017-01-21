@@ -56,7 +56,7 @@ export default class extends Phaser.Sprite {
       this.currentSpeed -= this.acceleration;
     }
 
-    if (this.currentSpeed > 0) {
+    if (this.currentSpeed >= 0) {
       this.game.physics.arcade.velocityFromRotation(this.rotation - 1.57, this.currentSpeed, this.body.velocity);
     }
 
