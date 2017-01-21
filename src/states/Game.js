@@ -11,6 +11,12 @@ export default class extends Phaser.State {
     // Add background
     this.game.add.sprite(0, 0, 'background');
 
+    // Add the audio
+    this.music = this.game.add.audio('menu_song');
+    // this.music.loopFull(1);
+
+    this.game.sound.setDecodedCallback(this.music, this.startMusic, this);
+
     // Timers in ms
     const blobTimekeeper = 1500;
     const dificultyTikekeeper = 100;
@@ -75,6 +81,10 @@ export default class extends Phaser.State {
     if (this.blobLoop.delay > 300) {
       this.blobLoop.delay -= 5;
     }
+  }
+
+  startMusic() {
+    this.music.play();
   }
 
   render() {
