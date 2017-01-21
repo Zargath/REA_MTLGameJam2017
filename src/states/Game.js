@@ -2,6 +2,7 @@
 import Phaser from 'phaser';
 import Blob from '../sprites/Blob';
 import Waveman from '../sprites/Waveman';
+import Background from '../sprites/Background';
 
 export default class extends Phaser.State {
   init() { }
@@ -9,7 +10,7 @@ export default class extends Phaser.State {
 
   create() {
     // Add background
-    this.game.add.sprite(0, 0, 'background');
+    this.addBackground();
 
     // Add the audio
     this.music = this.game.add.audio('menu_song');
@@ -55,12 +56,17 @@ export default class extends Phaser.State {
     bullet.kill();
   }
 
+  addBackground() {
+    const background = new Background({ game: this.game });
+    this.game.add.existing(background);
+  }
+
   addPlayer() {
     const waveman = new Waveman({
       game: this.game,
       x: this.game.world.centerX,
       y: this.game.world.centerY,
-      asset: 'mushroom',
+      asset: 'waveman',
     });
 
     this.player.add(waveman);
@@ -71,7 +77,7 @@ export default class extends Phaser.State {
       game: this.game,
       x: this.game.world.randomX,
       y: this.game.world.randomY,
-      asset: 'mushroom',
+      asset: 'ufo',
     });
     this.game.physics.enable(blob, Phaser.Physics.ARCADE);
     this.enemies.add(blob);
