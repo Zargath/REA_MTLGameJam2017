@@ -21,6 +21,7 @@ export default class extends Phaser.Sprite {
   }
 
   resetBullet(bullet) {
+    this.parentSprite.removeBullet(bullet);
     bullet.kill();
   }
 

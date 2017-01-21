@@ -8,6 +8,7 @@ export default class extends Phaser.Sprite {
 
     this.game = game;
     this.bulletTime = 0;
+    this.bullets = this.game.add.group();
     this.anchor.setTo(0.5);
     this.speed = 4;
   }
@@ -15,23 +16,29 @@ export default class extends Phaser.Sprite {
   shootBullet() {
     if (this.game.time.now > this.bulletTime) {
       const bullet = new Bullet({ game: this.game, x: this.x, y: this.y, asset: 'waveman_bullet_blue', waveman: this });
+      this.game.physics.enable(bullet, Phaser.Physics.ARCADE);
       this.game.add.existing(bullet);
+      this.bullets.add(bullet);
       this.bulletTime = this.game.time.now + 250;
     }
   }
 
+  removeBullet(bullet) {
+    this.bullets.remove(bullet);
+  }
+
   update() {
     if (this.game.input.keyboard.isDown(Phaser.Keyboard.LEFT)) {
-      this.x -= this.speed;
+      this.body.x -= this.speed;
     }
     if (this.game.input.keyboard.isDown(Phaser.Keyboard.RIGHT)) {
-      this.x += this.speed;
+      this.body.x += this.speed;
     }
     if (this.game.input.keyboard.isDown(Phaser.Keyboard.UP)) {
-      this.y -= this.speed;
+      this.body.y -= this.speed;
     }
     if (this.game.input.keyboard.isDown(Phaser.Keyboard.DOWN)) {
-      this.y += this.speed;
+      this.body.y += this.speed;
     }
     if (this.game.input.keyboard.isDown(Phaser.Keyboard.SPACEBAR) ||
         this.game.input.activePointer.leftButton.isDown) {
