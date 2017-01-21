@@ -21,10 +21,6 @@ export default class extends Phaser.Sprite {
     this.body.maxVelocity.setTo(400, 400);
     this.body.collideWorldBounds = true;
 
-    this.game.camera.follow(this);
-    this.game.camera.deadzone = new Phaser.Rectangle(150, 150, 500, 300);
-    this.game.camera.focusOnXY(0, 0);
-
     this.cursors = game.input.keyboard.createCursorKeys();
   }
 
