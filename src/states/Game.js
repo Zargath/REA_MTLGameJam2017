@@ -60,7 +60,7 @@ export default class extends Phaser.State {
       game: this.game,
       x: this.game.world.centerX,
       y: this.game.world.centerY,
-      asset: 'mushroom',
+      asset: 'waveman',
     });
 
     this.player.add(waveman);
@@ -71,7 +71,7 @@ export default class extends Phaser.State {
       game: this.game,
       x: this.game.world.randomX,
       y: this.game.world.randomY,
-      asset: 'mushroom',
+      asset: 'ufo',
     });
     this.game.physics.enable(blob, Phaser.Physics.ARCADE);
     this.enemies.add(blob);
