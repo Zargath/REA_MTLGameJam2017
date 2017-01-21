@@ -1,42 +1,43 @@
 /* globals __DEV__ */
 import Phaser from 'phaser';
 import Mushroom from '../sprites/Mushroom';
-import { setResponsiveWidth } from '../utils';
 
 export default class extends Phaser.State {
-  init() {}
-  preload() {}
+  init() { }
+  preload() { }
 
   create() {
-    const banner = this.add.text(this.game.world.centerX, this.game.height - 30, 'Phaser + ES6 + Webpack');
-    banner.font = 'Nunito';
-    banner.fontSize = 40;
-    banner.fill = '#77BFA3';
-    banner.anchor.setTo(0.5);
+    this.enemies = this.game.add.group();
+    this.enemies.enableBody = true;
 
-    const debugBanner = this.add.text(this.game.world.centerX, this.game.height - 120, 'Phaser + ES6 + Webpack');
-    debugBanner.font = 'Nunito';
-    debugBanner.fontSize = 40;
-    debugBanner.fill = '#000000';
-    debugBanner.anchor.setTo(0.5);
+    this.enemyTimer = this.game.time.create(false);
+    this.addEnemyLoop = this.enemyTimer.loop(1500, this.addEnemy, this);
+    this.enemyTimer.loop(100, this.increaseEnemyRate, this);
+    this.enemyTimer.start();
+  }
 
+  increaseEnemyRate() {
+    if (this.addEnemyLoop.delay >= 100) {
+      this.addEnemyLoop.delay -= 10;
+    }
+  }
 
-    this.mushroom = new Mushroom({
+  addEnemy() {
+    var mushroom = new Mushroom({
       game: this.game,
-      x: this.game.world.centerX,
-      y: this.game.world.centerY,
+      x: this.game.world.randomX,
+      y: this.game.world.randomY,
       asset: 'mushroom',
     });
 
-    // set the sprite width to 30% of the game width
-    setResponsiveWidth(this.mushroom, 30, this.game.world);
-    this.game.add.existing(this.mushroom);
+    this.enemies.add(mushroom);
+
+    console.log("game time: " + this.game.time.now);
+    console.log("state time: " + this.time.now);
   }
 
   render() {
-    if (__DEV__) {
-      this.game.debug.cameraInfo(this.game.camera, 32, 120, '#000000');
-      this.game.debug.spriteInfo(this.mushroom, 32, 32, '#000000');
-    }
+    game.debug.text('Time until event: ' + this.enemyTimer.duration.toFixed(0), 32, 32);
+    game.debug.text('Mush Count: ' + this.enemies.length.toFixed(0), 32, 120);
   }
 }
