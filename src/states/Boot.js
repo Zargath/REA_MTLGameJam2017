@@ -15,7 +15,6 @@ export default class extends Phaser.State {
       },
       active: this.fontsLoaded,
     });
-
     // Ignore web font load for now
     this.fontsReady = true;
 
