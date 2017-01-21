@@ -1,6 +1,6 @@
 /* globals __DEV__ */
 import Phaser from 'phaser';
-import Mushroom from '../sprites/Mushroom';
+import Waveman from '../sprites/Waveman';
 import { setResponsiveWidth } from '../utils';
 
 export default class extends Phaser.State {
@@ -21,22 +21,20 @@ export default class extends Phaser.State {
     debugBanner.anchor.setTo(0.5);
 
 
-    this.mushroom = new Mushroom({
+    this.waveman = new Waveman({
       game: this.game,
       x: this.game.world.centerX,
       y: this.game.world.centerY,
       asset: 'mushroom',
     });
 
-    // set the sprite width to 30% of the game width
-    setResponsiveWidth(this.mushroom, 30, this.game.world);
-    this.game.add.existing(this.mushroom);
+    this.game.add.existing(this.waveman);
   }
 
   render() {
     if (__DEV__) {
       this.game.debug.cameraInfo(this.game.camera, 32, 120, '#000000');
-      this.game.debug.spriteInfo(this.mushroom, 32, 32, '#000000');
+      this.game.debug.spriteInfo(this.waveman, 32, 32, '#000000');
     }
   }
 }
