@@ -6,7 +6,7 @@ webpackJsonp([0],[
 /***/ function(module, exports, __webpack_require__) {
 
 	__webpack_require__(/*! babel-polyfill */1);
-	module.exports = __webpack_require__(/*! C:\Users\alex.sanscartier\Documents\projects\GameJam\phaser-es6-webpack\src\main.js */298);
+	module.exports = __webpack_require__(/*! C:\Users\alex.sanscartier\Documents\projects\GameJam\REA_MTLGameJam2017\src\main.js */298);
 
 
 /***/ },
@@ -8976,7 +8976,7 @@ webpackJsonp([0],[
 	        active: this.fontsLoaded
 	      });
 
-	      //Ignore web font load for now
+	      // Ignore web font load for now
 	      this.fontsReady = true;
 
 	      var text = this.add.text(this.world.centerX, this.world.centerY, 'loading fonts', { font: '16px Arial', fill: '#dddddd', align: 'center' });
@@ -9054,10 +9054,11 @@ webpackJsonp([0],[
 	      (0, _utils.centerGameObjects)([this.loaderBg, this.loaderBar]);
 
 	      this.load.setPreloadSprite(this.loaderBar);
+
 	      //
 	      // load your assets
 	      //
-	      this.load.image('mushroom', 'assets/images/mushroom2.png');
+	      this.load.image('deathCircle', 'assets/images/deathCircle.png');
 	    }
 	  }, {
 	    key: 'create',
@@ -9114,9 +9115,9 @@ webpackJsonp([0],[
 
 	var _phaser2 = _interopRequireDefault(_phaser);
 
-	var _Mushroom = __webpack_require__(/*! ../sprites/Mushroom */ 310);
+	var _DeathCircleManager = __webpack_require__(/*! ../Manager/DeathCircleManager */ 310);
 
-	var _Mushroom2 = _interopRequireDefault(_Mushroom);
+	var _DeathCircleManager2 = _interopRequireDefault(_DeathCircleManager);
 
 	var _utils = __webpack_require__(/*! ../utils */ 308);
 
@@ -9147,35 +9148,34 @@ webpackJsonp([0],[
 	  }, {
 	    key: 'create',
 	    value: function create() {
-	      var banner = this.add.text(this.game.world.centerX, this.game.height - 30, 'Phaser + ES6 + Webpack');
-	      banner.font = 'Nunito';
-	      banner.fontSize = 40;
-	      banner.fill = '#77BFA3';
-	      banner.anchor.setTo(0.5);
-
-	      var debugBanner = this.add.text(this.game.world.centerX, this.game.height - 120, 'Phaser + ES6 + Webpack');
-	      debugBanner.font = 'Nunito';
-	      debugBanner.fontSize = 40;
-	      debugBanner.fill = '#000000';
-	      debugBanner.anchor.setTo(0.5);
-
-	      this.mushroom = new _Mushroom2.default({
+	      game.physics.startSystem(_phaser2.default.Physics.ARCADE);
+	      this.deathCircleManager = new _DeathCircleManager2.default({
 	        game: this.game,
-	        x: this.game.world.centerX,
-	        y: this.game.world.centerY,
-	        asset: 'mushroom'
+	        startingRadius: 500,
+	        dots: 150
 	      });
 
-	      // set the sprite width to 30% of the game width
-	      (0, _utils.setResponsiveWidth)(this.mushroom, 30, this.game.world);
-	      this.game.add.existing(this.mushroom);
+	      this.deathCircleManager.initialize();
+
+	      this.upKey = game.input.keyboard.addKey(_phaser2.default.Keyboard.UP);
+	      this.downKey = game.input.keyboard.addKey(_phaser2.default.Keyboard.DOWN);
+	      this.leftKey = game.input.keyboard.addKey(_phaser2.default.Keyboard.LEFT);
+	      this.rightKey = game.input.keyboard.addKey(_phaser2.default.Keyboard.RIGHT);
+	    }
+	  }, {
+	    key: 'update',
+	    value: function update() {
+	      if (this.upKey.isDown) {
+	        this.deathCircleManager.pullIn(3);
+	      } else if (this.downKey.isDown) {
+	        this.deathCircleManager.pushAway(3);
+	      }
 	    }
 	  }, {
 	    key: 'render',
 	    value: function render() {
 	      if (true) {
-	        this.game.debug.cameraInfo(this.game.camera, 32, 120, "#000000");
-	        this.game.debug.spriteInfo(this.mushroom, 32, 32, "#000000");
+	        this.game.debug.cameraInfo(this.game.camera, 32, 120, '#000000');
 	      }
 	    }
 	  }]);
@@ -9187,9 +9187,144 @@ webpackJsonp([0],[
 
 /***/ },
 /* 310 */
-/*!*********************************!*\
-  !*** ./src/sprites/Mushroom.js ***!
-  \*********************************/
+/*!*******************************************!*\
+  !*** ./src/Manager/DeathCircleManager.js ***!
+  \*******************************************/
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	    value: true
+	});
+
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+	var _phaser = __webpack_require__(/*! phaser */ 303);
+
+	var _phaser2 = _interopRequireDefault(_phaser);
+
+	var _DeathCircle = __webpack_require__(/*! ../sprites/DeathCircle */ 311);
+
+	var _DeathCircle2 = _interopRequireDefault(_DeathCircle);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+	var _class = function () {
+	    function _class(_ref) {
+	        var game = _ref.game,
+	            startingRadius = _ref.startingRadius,
+	            dots = _ref.dots;
+
+	        _classCallCheck(this, _class);
+
+	        this.game = game;
+	        this.startingRadius = startingRadius;
+	        this.dots = dots;
+	    }
+
+	    _createClass(_class, [{
+	        key: 'initialize',
+	        value: function initialize() {
+	            //this.deathCircles = this.game.add.group();
+	            this.deathCircles = new Array();
+	            this.test = 0.80;
+
+	            for (var i = 0; i < this.dots; i++) {
+	                var n = this.dots - 1;
+	                var x = this.startingRadius * Math.cos(i * 2 * 3.141516 / n);
+	                var y = this.startingRadius * Math.sin(i * 2 * 3.141516 / n);
+	                var deathCircle = new _DeathCircle2.default({
+	                    game: this.game,
+	                    x: x + this.game.world.centerX,
+	                    y: y + this.game.world.centerY,
+	                    asset: 'deathCircle'
+	                });
+
+	                this.deathCircles.push(deathCircle);
+	                game.physics.enable(deathCircle, _phaser2.default.Physics.ARCADE);
+	                this.game.add.existing(deathCircle);
+	            }
+	            this.deathCircleActivation = this.game.time.events.loop(_phaser2.default.Timer.SECOND * 0.01, this.generateDeathCircle, this);
+	            this.deathCircleActivation.timer.start();
+	        }
+	    }, {
+	        key: 'pushAway',
+	        value: function pushAway(distance) {
+	            this.test += 0.001 * distance;
+	        }
+	    }, {
+	        key: 'pullIn',
+	        value: function pullIn(distance) {
+	            this.test -= 0.001 * distance;
+	        }
+	    }, {
+	        key: 'generateDeathCircle',
+	        value: function generateDeathCircle() {
+	            this.test += 0.001;
+	            var radius = this.startingRadius * Math.cos(this.test);
+	            var n = this.dots - 1;
+
+	            for (var i = 0; i < this.deathCircles.length; i++) {
+	                var _n = this.dots - 1;
+	                var x = radius * Math.cos(i * 2 * 3.141516 / _n);
+	                var y = radius * Math.sin(i * 2 * 3.141516 / _n);
+
+	                this.deathCircles[i].x = x + this.game.world.centerX;
+	                this.deathCircles[i].y = y + this.game.world.centerY;
+	            }
+	        }
+
+	        /*
+	             this.deathCircles.forEach(function (deathCircle) {
+	                 for (let i = 0; i < this.dots; i++) {
+	                     let n = this.dots - 1;
+	                     let x = radius * Math.cos(i * 2 * 3.141516 / n);
+	                     let y = radius * Math.sin(i * 2 * 3.141516 / n);
+	                        deathCircle.x = x + this.game.world.centerX;
+	                     deathCircle.y = y + this.game.world.centerY;
+	                 }
+	                 this.game.add.existing(deathCircle);
+	             }, this);
+	            }
+	         /*
+	        }
+	        */
+	        /*
+	           }
+	           */
+
+	        /*
+	        this.test++;
+	          var test2  = this.test % 90;
+	        var radius = test2;
+	        for (var i = 0; i < this.deathCircles.length; i++) {        
+	           for (let j = 0; j < this.dots; j++) {
+	               let n = this.dots - 1;
+	               let x = test2 * Math.cos(j * 2 * 3.141516 / n);
+	               let y = test2 * Math.sin(j * 2 * 3.141516 / n);
+	               
+	               this.deathCircles[i].x = x + this.game.world.centerX;
+	               this.deathCircles[i].y = y + this.game.world.centerY;
+	              }
+	           
+	        }
+	        */
+
+	    }]);
+
+	    return _class;
+	}();
+
+	exports.default = _class;
+
+/***/ },
+/* 311 */
+/*!************************************!*\
+  !*** ./src/sprites/DeathCircle.js ***!
+  \************************************/
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -9227,14 +9362,13 @@ webpackJsonp([0],[
 
 	    _this.game = game;
 	    _this.anchor.setTo(0.5);
+	    _this.scale.setTo(0.03, 0.03);
 	    return _this;
 	  }
 
 	  _createClass(_class, [{
 	    key: 'update',
-	    value: function update() {
-	      this.angle += 1;
-	    }
+	    value: function update() {}
 	  }]);
 
 	  return _class;
