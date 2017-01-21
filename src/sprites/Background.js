@@ -11,23 +11,17 @@ export default class extends Phaser.TileSprite {
     this.cursors = game.input.keyboard.createCursorKeys();
   }
 
-  update(){
-    if (this.cursors.left.isDown)
-    {
-        this.tilePosition.x += this.speed;
-    }
-    else if (this.cursors.right.isDown)
-    {
-        this.tilePosition.x -= this.speed;
+  update() {
+    if (this.cursors.left.isDown) {
+      this.tilePosition.x += this.speed;
+    } else if (this.cursors.right.isDown) {
+      this.tilePosition.x -= this.speed;
     }
 
-    if (this.cursors.up.isDown)
-    {
-        this.tilePosition.y += this.speed;
-    }
-    else if (this.cursors.down.isDown)
-    {
-        this.tilePosition.y -= this.speed;
+    if (this.cursors.up.isDown) {
+      this.tilePosition.y += this.speed;
+    } else if (this.cursors.down.isDown) {
+      this.tilePosition.y -= this.speed;
     }
   }
 }

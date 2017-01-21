@@ -1,7 +1,13 @@
 export default class {
 
 
-  constructor() {
+  constructor({ game }) {
+    this.game = game;
+    this.game.scoreText = this.game.add.text(10, 10, this.getScoreString());
+    this.game.scoreText.boundsAlignH = 'left';
+    this.game.scoreText.font = 'Press Start 2P';
+    this.game.scoreText.fontSize = 40;
+    this.game.scoreText.fill = '#FF0000';
     // Integer values for tracking various score mechanics
     this.enemyKillCount = 0;
     this.timerScoreCount = 0;
@@ -10,6 +16,10 @@ export default class {
     this.enemyKillCountMultiplier = 3;
     this.timerScoreCountMultiple = 2;
     this.circleScoreCountMultiplier = 2;
+  }
+
+  update() {
+    this.game.scoreText.text = this.getScoreString();
   }
 
   increaseEnemyKillCount() {
@@ -33,6 +43,6 @@ export default class {
   }
 
   getScoreString() {
-    return `Score: ${this.getScore()}`;
+    return `Score:${this.getScore()}`;
   }
 }

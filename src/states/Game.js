@@ -4,6 +4,7 @@ import Blob from '../sprites/Blob';
 import Waveman from '../sprites/Waveman';
 import Background from '../sprites/Background';
 import HUDManager from '../managers/HUDManager';
+import SoundManager from '../managers/SoundManager';
 
 export default class extends Phaser.State {
   init() { }
@@ -14,10 +15,8 @@ export default class extends Phaser.State {
     this.addBackground();
 
     // Add the audio
-    this.music = this.game.add.audio('menu_song');
-    // this.music.loopFull(1);
+    this.soundManager = new SoundManager({ game: this.game });
 
-    this.game.sound.setDecodedCallback(this.music, this.startMusic, this);
     // Add the hud manager
     this.hudManager = new HUDManager({ game: this.game });
     this.hudManager.initialize();
@@ -52,7 +51,6 @@ export default class extends Phaser.State {
   }
 
   update() {
-    this.game.physics.callbackContext = this;
     this.game.physics.arcade.collide(this.player.children[0].bullets, this.enemies, this.logCollision, null, this);
     this.hudManager.update();
   }
@@ -61,6 +59,7 @@ export default class extends Phaser.State {
     enemy.kill();
     bullet.kill();
     this.hudManager.getManager('score').increaseEnemyKillCount();
+    this.soundManager.playSoundFromGroup('alien_damage');
   }
 
   addBackground() {
@@ -94,15 +93,5 @@ export default class extends Phaser.State {
     if (this.blobLoop.delay > 300) {
       this.blobLoop.delay -= 5;
     }
-  }
-
-  startMusic() {
-    this.music.play();
-  }
-
-  render() {
-    // if (__DEV__) {
-
-    // }
   }
 }
