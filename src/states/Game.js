@@ -44,13 +44,16 @@ export default class extends Phaser.State {
     this.addDeathCircle();
 
     this.game.physics.startSystem(Phaser.Physics.ARCADE);
+
+    //var scanlineFilter = new Phaser.Filter(this.game, null, game.cache.getShader('stars'));
+    //this.game.world.filters = [scanlineFilter];
   }
 
   update() {
     this.game.physics.arcade.collide(this.player.bullets, this.enemies, this.logCollision, null, this);
 
     for (var i = 0; i < this.deathCircleManager.deathCircles.length; i++) {
-          this.game.physics.arcade.collide(this.player, this.deathCircleManager.deathCircles[i], this.playerDeathCircleCollision, null, this);
+      this.game.physics.arcade.collide(this.player, this.deathCircleManager.deathCircles[i], this.playerDeathCircleCollision, null, this);
     }
   }
 
@@ -61,10 +64,10 @@ export default class extends Phaser.State {
   logCollision(bullet, enemy) {
     enemy.dies()
     bullet.kill();
-    this.deathCircleManager.pushAway(50);
+    this.deathCircleManager.pushAway(5);
   }
 
-  playerDeathCircleCollision(player, deathCircle){
+  playerDeathCircleCollision(player, deathCircle) {
     this.game.state.start("Splash");
   }
 
