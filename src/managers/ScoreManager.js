@@ -8,6 +8,7 @@ export default class {
     this.game.scoreText.font = 'Press Start 2P';
     this.game.scoreText.fontSize = 40;
     this.game.scoreText.fill = '#FF0000';
+    this.game.scoreText.fixedToCamera = true;
     // Integer values for tracking various score mechanics
     this.enemyKillCount = 0;
     this.timerScoreCount = 0;

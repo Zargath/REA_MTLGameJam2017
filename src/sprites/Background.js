@@ -6,8 +6,12 @@ export default class extends Phaser.TileSprite {
     super(game, 0, 0, game.canvas.width, game.canvas.height, 'background');
 
     this.game = game;
-    this.speed = 2;
 
-    this.cursors = game.input.keyboard.createCursorKeys();
+    this.fixedToCamera = true;
+  }
+
+  update() {
+    this.tilePosition.x = -this.game.camera.x;
+    this.tilePosition.y = -this.game.camera.y;
   }
 }

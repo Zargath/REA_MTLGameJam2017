@@ -11,6 +11,8 @@ export default class extends Phaser.State {
   preload() { }
 
   create() {
+    this.game.world.setBounds(-1000, -1000, 2000, 2000);
+
     // Add background
     this.addBackground();
 
@@ -45,14 +47,16 @@ export default class extends Phaser.State {
     this.blobLoop = this.stateTimer.loop(blobTimekeeper, this.addBlob, this);
     this.dificultyLoop = this.stateTimer.loop(dificultyTikekeeper, this.increaseDificulty, this);
 
-    this.game.physics.p2.enable(this.player.children[0].bullets);
+    this.game.physics.p2.enable(this.player.bullets);
+
+    this.game.camera.follow(this.player);
 
     // Start the state!
     this.stateTimer.start();
   }
 
   update() {
-    this.game.physics.arcade.collide(this.player.children[0].bullets, this.enemies, this.logCollision, null, this);
+    this.game.physics.arcade.collide(this.player.bullets, this.enemies, this.logCollision, null, this);
     this.hudManager.update();
   }
 
@@ -69,14 +73,8 @@ export default class extends Phaser.State {
   }
 
   addPlayer() {
-    const waveman = new Waveman({
-      game: this.game,
-      x: this.game.world.centerX,
-      y: this.game.world.centerY,
-      asset: 'waveman',
-    });
-
-    this.player.add(waveman);
+    this.player = new Waveman({ game: this.game });
+    this.game.add.existing(this.player);
   }
 
   addBlob() {
