@@ -26,12 +26,13 @@ export default class extends Phaser.State {
     // Custom Timers
     this.stateTimer = this.time.create(false);
 
-    // Define loops
-    this.blobLoop = this.stateTimer.loop(blobTimekeeper, this.addBlob, this);
-    this.dificultyLoop = this.stateTimer.loop(dificultyTikekeeper, this.increaseDificulty, this);
-
     // Create player
     this.addPlayer();
+
+    // Define loops
+    this.addBlob();
+    this.blobLoop = this.stateTimer.loop(blobTimekeeper, this.addBlob, this);
+    this.dificultyLoop = this.stateTimer.loop(dificultyTikekeeper, this.increaseDificulty, this);
 
     // Set up camera
     this.game.camera.follow(this.player);
@@ -62,11 +63,9 @@ export default class extends Phaser.State {
   addBlob() {
     const blob = new Blob({
       game: this.game,
-      x: this.game.world.randomX,
-      y: this.game.world.randomY,
       asset: 'ufo',
+      player: this.player
     });
-    this.game.physics.enable(blob, Phaser.Physics.ARCADE);
     this.enemies.add(blob);
   }
 
