@@ -37,7 +37,4 @@ export default class extends Phaser.Sprite {
     this.x += this.speed * direction.x;
     this.y += this.speed * direction.y;
   }
-  render() {
-    this.game.debug.spriteInfo(this, 32, 32);
-  }
 }

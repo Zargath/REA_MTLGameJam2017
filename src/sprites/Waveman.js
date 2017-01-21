@@ -3,14 +3,25 @@ import Bullet from './Bullet';
 
 export default class extends Phaser.Sprite {
 
-  constructor({ game, x, y, asset }) {
-    super(game, x, y, asset);
+  constructor({ game }) {
+    super(game, game.world.centerX, game.world.centerY, 'waveman');
 
     this.game = game;
+
+    this.maxSpeed = 300;
+    this.acceleration = 8;
+    this.currentSpeed = 0;
+    this.anchor.setTo(0.5);
+
     this.bulletTime = 0;
     this.bullets = this.game.add.group();
-    this.anchor.setTo(0.5);
-    this.speed = 4;
+
+    this.game.physics.enable(this, Phaser.Physics.ARCADE);
+    this.body.drag.set(0.2);
+    this.body.maxVelocity.setTo(400, 400);
+    this.body.collideWorldBounds = true;
+
+    this.cursors = game.input.keyboard.createCursorKeys();
   }
 
   shootBullet() {
@@ -28,26 +39,28 @@ export default class extends Phaser.Sprite {
   }
 
   update() {
-    if (this.game.input.keyboard.isDown(Phaser.Keyboard.LEFT)) {
-      this.body.x -= this.speed;
+    if (this.cursors.left.isDown) {
+      this.angle -= 4;
+    } else if (this.cursors.right.isDown) {
+      this.angle += 4;
     }
-    if (this.game.input.keyboard.isDown(Phaser.Keyboard.RIGHT)) {
-      this.body.x += this.speed;
+
+    if (this.cursors.up.isDown) {
+      if (this.currentSpeed < this.maxSpeed) {
+        this.currentSpeed += this.acceleration;
+      }
     }
-    if (this.game.input.keyboard.isDown(Phaser.Keyboard.UP)) {
-      this.body.y -= this.speed;
+
+    if (!this.cursors.up.isDown && this.currentSpeed > 0) {
+      this.currentSpeed -= this.acceleration;
     }
-    if (this.game.input.keyboard.isDown(Phaser.Keyboard.DOWN)) {
-      this.body.y += this.speed;
+
+    if (this.currentSpeed >= 0) {
+      this.game.physics.arcade.velocityFromRotation(this.rotation - 1.57, this.currentSpeed, this.body.velocity);
     }
-    if (this.game.input.keyboard.isDown(Phaser.Keyboard.SPACEBAR) ||
-        this.game.input.activePointer.leftButton.isDown) {
+
+    if (this.game.input.keyboard.isDown(Phaser.Keyboard.SPACEBAR)) {
       this.shootBullet();
     }
-    let targetAngle = ((360 / (2 * Math.PI)) * this.game.math.angleBetween(
-      this.x, this.y, this.game.input.activePointer.x, this.game.input.activePointer.y)) + 90;
-
-    if (targetAngle < 0) { targetAngle += 360; }
-    this.angle = targetAngle;
   }
 }
