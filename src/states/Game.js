@@ -15,6 +15,8 @@ export default class extends Phaser.State {
     const blobTimekeeper = 1500;
     const dificultyTikekeeper = 100;
 
+    this.game.physics.startSystem(Phaser.Physics.P2JS);
+
     // Sprite Groups
     this.player = this.game.add.group();
     this.player.enableBody = true;
@@ -32,8 +34,19 @@ export default class extends Phaser.State {
     // Create player
     this.addPlayer();
 
+    this.game.physics.p2.enable(this.player.children[0].bullets);
+
     // Start the state!
     this.stateTimer.start();
+  }
+
+  update() {
+    this.game.physics.arcade.collide(this.player.children[0].bullets, this.enemies, this.logCollision);
+  }
+
+  logCollision(bullet, enemy) {
+    enemy.kill();
+    bullet.kill();
   }
 
   addPlayer() {
@@ -54,7 +67,7 @@ export default class extends Phaser.State {
       y: this.game.world.randomY,
       asset: 'mushroom',
     });
-
+    this.game.physics.enable(blob, Phaser.Physics.ARCADE);
     this.enemies.add(blob);
   }
 
