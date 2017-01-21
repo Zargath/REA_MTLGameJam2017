@@ -13,25 +13,22 @@ export default class extends Phaser.Sprite {
     this.currentSpeed = 0;
     this.anchor.setTo(0.5);
 
-    this.bulletTime = 0;
-    this.bullets = this.game.add.group();
+    // Configure Weapons
+    this.weapon = this.game.add.weapon(30, 'waveman_bullet_blue');
+    this.weapon.bulletKillType = Phaser.Weapon.KILL_WORLD_BOUNDS;
+    this.weapon.bulletSpeed = 600;
+    this.weapon.fireRate = 100;
+    this.weapon.trackSprite(this, 0, 0, true);
 
+    // Setup Physics
     this.game.physics.enable(this, Phaser.Physics.ARCADE);
     this.body.drag.set(0.2);
     this.body.maxVelocity.setTo(400, 400);
     this.body.collideWorldBounds = true;
 
-    this.cursors = game.input.keyboard.createCursorKeys();
-  }
-
-  shootBullet() {
-    if (this.game.time.now > this.bulletTime) {
-      const bullet = new Bullet({ game: this.game, x: this.x, y: this.y, asset: 'waveman_bullet_blue', waveman: this });
-      this.game.physics.enable(bullet, Phaser.Physics.ARCADE);
-      this.game.add.existing(bullet);
-      this.bullets.add(bullet);
-      this.bulletTime = this.game.time.now + 250;
-    }
+    // Controls
+    this.cursors = this.game.input.keyboard.createCursorKeys();
+    this.fireButton = this.game.input.keyboard.addKey(Phaser.KeyCode.SPACEBAR);
   }
 
   removeBullet(bullet) {
@@ -56,11 +53,11 @@ export default class extends Phaser.Sprite {
     }
 
     if (this.currentSpeed >= 0) {
-      this.game.physics.arcade.velocityFromRotation(this.rotation - 1.57, this.currentSpeed, this.body.velocity);
+      this.game.physics.arcade.velocityFromRotation(this.rotation, this.currentSpeed, this.body.velocity);
     }
 
-    if (this.game.input.keyboard.isDown(Phaser.Keyboard.SPACEBAR)) {
-      this.shootBullet();
+    if (this.fireButton.isDown) {
+      this.weapon.fire();
     }
   }
 }

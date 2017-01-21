@@ -51,7 +51,7 @@ export default class extends Phaser.State {
   }
 
   update() {
-    this.game.physics.arcade.collide(this.player.bullets, this.enemies, this.logCollision, null, this);
+    this.game.physics.arcade.collide(this.player.weapon.bullets, this.enemies, this.logCollision, null, this);
     this.hudManager.update();
   }
 
