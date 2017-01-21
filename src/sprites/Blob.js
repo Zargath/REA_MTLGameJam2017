@@ -7,10 +7,13 @@ export default class extends Phaser.Sprite {
 
     this.game = game;
     this.anchor.setTo(0.5);
+    this.speed = 1;
   }
 
-  update() {
-    this.angle += 1;
+  moveToLocation() {
+    this.game.add.tween(this).to({
+      x: this.game.world.randomX,
+      y: this.game.world.randomY,
+    }, 1750, Phaser.Easing.Quadratic.InOut, true);
   }
-
 }
