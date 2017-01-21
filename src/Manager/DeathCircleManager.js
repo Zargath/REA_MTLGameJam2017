@@ -36,11 +36,11 @@ export default class {
         this.deathCircleActivation.timer.start();
     }
 
-    pushAway(distance){
+    pushAway(distance) {
         this.test += 0.001 * distance;
     }
 
-     pullIn(distance){
+    pullIn(distance) {
         this.test -= 0.001 * distance;
     }
 
@@ -56,55 +56,26 @@ export default class {
 
             this.deathCircles[i].x = x + this.game.world.centerX;
             this.deathCircles[i].y = y + this.game.world.centerY;
+            /*
+            var colorModificationRed = 150;//this.test*140 % 255;
+            var colorModificationGreen = 255 - Math.cos(this.test) * 100;
+            this.deathCircles[i].tint = this.rgbToHex(colorModificationRed, colorModificationGreen, 255);
+            //this.deathCircles[i].tint = this.rgbToHex(0, 255, 0);
+            //this.deathCircles[i].tint = this.rgbToHex(0, 0, 0);       
+*/
+            if (radius < 150) {
+                this.deathCircles[i].tint = this.rgbToHex(255, 0, 0);
 
+            } else {
+                this.deathCircles[i].tint = this.rgbToHex(0, 255, 0);
+
+            }
         }
     }
 
-
-    /*
-         this.deathCircles.forEach(function (deathCircle) {
-             for (let i = 0; i < this.dots; i++) {
-                 let n = this.dots - 1;
-                 let x = radius * Math.cos(i * 2 * 3.141516 / n);
-                 let y = radius * Math.sin(i * 2 * 3.141516 / n);
- 
-                 deathCircle.x = x + this.game.world.centerX;
-                 deathCircle.y = y + this.game.world.centerY;
-             }
-             this.game.add.existing(deathCircle);
-         }, this);
- 
-     }
-     /*
- 
- }
- */
-    /*
- 
+    rgbToHex(r, g, b) {
+        return "0x" + ((1 << 24) + (r << 16) + (g << 8) + b).toString(16).slice(1);
     }
- 
-    */
-
-
-    /*
-   this.test++;
- 
-   var test2  = this.test % 90;
-   var radius = test2;
-   for (var i = 0; i < this.deathCircles.length; i++) {        
-       for (let j = 0; j < this.dots; j++) {
-           let n = this.dots - 1;
-           let x = test2 * Math.cos(j * 2 * 3.141516 / n);
-           let y = test2 * Math.sin(j * 2 * 3.141516 / n);
-           
-           this.deathCircles[i].x = x + this.game.world.centerX;
-           this.deathCircles[i].y = y + this.game.world.centerY;
- 
-       }
-       
-   }
-   */
-
 }
 
 
