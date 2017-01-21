@@ -15,7 +15,7 @@ export default class extends Phaser.State {
       },
       active: this.fontsLoaded,
     });
-
+    game.load.script('webfont', '//ajax.googleapis.com/ajax/libs/webfont/1.4.7/webfont.js');
     // Ignore web font load for now
     this.fontsReady = true;
 

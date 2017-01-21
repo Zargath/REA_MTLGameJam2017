@@ -3,6 +3,7 @@ import Phaser from 'phaser';
 import Blob from '../sprites/Blob';
 import Waveman from '../sprites/Waveman';
 import Background from '../sprites/Background';
+import ScoreManager from '../managers/ScoreManager';
 
 export default class extends Phaser.State {
   init() { }
@@ -11,6 +12,11 @@ export default class extends Phaser.State {
   create() {
     // Add background
     this.addBackground();
+
+    // Add score manager
+    this.scoreManager = new ScoreManager();
+    this.scoreText = this.game.add.text(200, 100, this.scoreManager.getScoreString());
+    this.font = 'Nunito';
 
     // Timers in ms
     const blobTimekeeper = 1500;
@@ -43,6 +49,7 @@ export default class extends Phaser.State {
 
   update() {
     this.game.physics.arcade.collide(this.player.children[0].bullets, this.enemies, this.logCollision);
+    this.scoreText.text = this.scoreManager.getScoreString();
   }
 
   logCollision(bullet, enemy) {
