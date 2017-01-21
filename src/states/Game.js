@@ -20,9 +20,6 @@ export default class extends Phaser.State {
     const dificultyTikekeeper = 100;
 
     // Sprite Groups
-    this.player = this.game.add.group();
-    this.player.enableBody = true;
-
     this.enemies = this.game.add.group();
     this.enemies.enableBody = true;
 
@@ -36,12 +33,15 @@ export default class extends Phaser.State {
     // Create player
     this.addPlayer();
 
+    // Set up camera
+    this.game.camera.follow(this.player);
+
     // Start the state!
     this.stateTimer.start();
   }
 
   update() {
-    this.game.physics.arcade.collide(this.player.children[0].bullets, this.enemies, this.logCollision);
+    this.game.physics.arcade.collide(this.player.bullets, this.enemies, this.logCollision);
   }
 
   logCollision(bullet, enemy) {
@@ -55,8 +55,8 @@ export default class extends Phaser.State {
   }
 
   addPlayer() {
-    const waveman = new Waveman({ game: this.game });
-    this.player.add(waveman);
+    this.player = new Waveman({ game: this.game });
+    this.game.add.existing(this.player);
   }
 
   addBlob() {
@@ -76,5 +76,6 @@ export default class extends Phaser.State {
     }
   }
 
-  render() {  }
+  render() { 
+   }
 }
