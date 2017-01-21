@@ -35,4 +35,12 @@ export default class extends Phaser.Sprite {
       this.game.physics.arcade.moveToObject(this, this.player, this.speed);
     }
   }
+
+  dies() {
+    this.kill();
+    if (typeof this.game.deathCircleManager != 'undefined') {
+      this.game.deathCircleManager.pushAway(10);
+    }
+
+  }
 }
