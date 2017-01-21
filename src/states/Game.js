@@ -8,6 +8,9 @@ export default class extends Phaser.State {
   preload() { }
 
   create() {
+    // Add background
+    this.game.add.sprite(0, 0, 'background');
+
     // Timers in ms
     const blobTimekeeper = 1500;
     const dificultyTikekeeper = 100;
@@ -34,7 +37,7 @@ export default class extends Phaser.State {
   }
 
   addPlayer() {
-    var waveman = new Waveman({
+    const waveman = new Waveman({
       game: this.game,
       x: this.game.world.centerX,
       y: this.game.world.centerY,
@@ -45,7 +48,7 @@ export default class extends Phaser.State {
   }
 
   addBlob() {
-    var blob = new Blob({
+    const blob = new Blob({
       game: this.game,
       x: this.game.world.randomX,
       y: this.game.world.randomY,
