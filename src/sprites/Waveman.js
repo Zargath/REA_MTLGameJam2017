@@ -41,8 +41,7 @@ export default class extends Phaser.Sprite {
   update() {
     if (this.cursors.left.isDown) {
       this.angle -= 4;
-    }
-    else if (this.cursors.right.isDown) {
+    } else if (this.cursors.right.isDown) {
       this.angle += 4;
     }
 

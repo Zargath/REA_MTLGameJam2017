@@ -7,7 +7,7 @@ export default class extends Phaser.Sprite {
 
     this.parentSprite = waveman;
 
-    this.rotation = waveman.rotation - 1.6;
+    this.rotation = waveman.rotation;
 
     const direction = this.getDirection();
     this.x = waveman.x + (direction.x * (waveman.width / 2));
@@ -26,8 +26,8 @@ export default class extends Phaser.Sprite {
   }
 
   getDirection() {
-    const dirX = Math.cos(this.rotation);
-    const dirY = Math.sin(this.rotation);
+    const dirX = Math.cos(this.rotation - 1.6);
+    const dirY = Math.sin(this.rotation - 1.6);
 
     return { x: dirX, y: dirY };
   }

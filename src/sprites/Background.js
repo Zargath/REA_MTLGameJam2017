@@ -10,7 +10,7 @@ export default class extends Phaser.TileSprite {
     this.fixedToCamera = true;
   }
 
-  update(){
+  update() {
     this.tilePosition.x = -this.game.camera.x;
     this.tilePosition.y = -this.game.camera.y;
   }

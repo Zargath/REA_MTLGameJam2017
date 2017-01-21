@@ -20,19 +20,18 @@ export default class extends Phaser.Sprite {
     this.body.collideWorldBounds = true;
   }
 
-  update () {
-    let distanceToPlayer = this.game.physics.arcade.distanceBetween(this, this.player);
+  update() {
+    const distanceToPlayer = this.game.physics.arcade.distanceBetween(this, this.player);
 
-    if(distanceToPlayer < 300 && !this.movingRand){
+    if (distanceToPlayer < 300 && !this.movingRand) {
       this.game.add.tween(this).to({ x: this.game.world.randomX, y: this.game.world.randomY }, 1000, Phaser.Easing.Quadratic.InOut);
       this.movingRand = true;
 
       // Hack to move randomly for 1 second
-      game.time.events.add(1000, function () {
+      this.game.time.events.add(1000, function () {
         this.movingRand = false;
       }, this);
-
-    } else if(!this.movingRand) {
+    } else if (!this.movingRand) {
       this.game.physics.arcade.moveToObject(this, this.player, this.speed);
     }
   }

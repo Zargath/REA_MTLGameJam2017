@@ -11,11 +11,10 @@ export default class extends Phaser.State {
   preload() {
     WebFont.load({
       google: {
-        families: ['Nunito'],
+        families: ['Nunito', 'Press Start 2P'],
       },
       active: this.fontsLoaded,
     });
-
     // Ignore web font load for now
     this.fontsReady = true;
 
