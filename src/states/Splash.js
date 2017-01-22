@@ -21,6 +21,7 @@ export default class extends Phaser.State {
     this.load.image('wasd', 'assets/images/wasd.png');
     this.load.image('space_bar', 'assets/images/space_bar.png');
     this.load.spritesheet('explosion', 'assets/images/explode.png', 128, 128);
+    this.load.spritesheet('goat', 'assets/images/goats.png', 45, 45);
 
     // Load audio assets
     this.loadAudio();

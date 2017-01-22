@@ -2,6 +2,7 @@ import Phaser from 'phaser';
 import StaticBackground from '../sprites/StaticBackground';
 import ColorGenerator from '../Generators/ColorGenerator';
 import HelpMenu from './Popups/HelpMenu';
+import Goat from '../sprites/Goat';
 
 export default class extends Phaser.State {
   init() {
@@ -41,13 +42,28 @@ export default class extends Phaser.State {
     this.introText.anchor.set(0.5);
 
     this.closeMenuButton = this.game.input.keyboard.addKey(Phaser.KeyCode.ESC);
+    this.showGoatButton = this.game.input.keyboard.addKey(Phaser.KeyCode.G);
 
     this.startButton = this.game.add.button(xPos, yPos + 200, 'button_start', this.goToMenu, this);
     this.menuButton = this.game.add.button(xPos, yPos + 350, 'button_howtoplay', this.showHelpMenu, this);
 
-
     this.startButton.anchor.set(0.5);
     this.menuButton.anchor.set(0.5);
+
+    // Goat!!!
+    this.ShowingGoat = false;
+    this.goat = new Goat({
+      game: this.game
+    });
+  }
+
+  toggleGoat(){    
+    if(this.ShowingGoat) {
+      this.game.add.existing(this.goat);
+      this.goat.move();
+    }
+
+    this.ShowingGoat = true;
   }
 
   showHelpMenu() {
@@ -65,6 +81,10 @@ export default class extends Phaser.State {
   update() {
     if (this.closeMenuButton.isDown) {
       this.helpMenu.hide();
+    }
+
+    if(this.showGoatButton.isDown) {
+      this.toggleGoat();
     }
   }
 
