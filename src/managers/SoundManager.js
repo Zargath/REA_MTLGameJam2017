@@ -21,4 +21,9 @@ export default class {
     const sound = this.game.add.audio(key);
     sound.play();
   }
+
+  playSound(key, volume) {
+    const sound = this.game.add.audio(key);
+    sound.play(null, null, volume);
+  }
 }
