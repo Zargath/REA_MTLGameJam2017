@@ -12,9 +12,11 @@ export default class {
 
     // Integer values for tracking various score mechanics
     this.enemiesRemaining = 0;
+    this.currentWave = 0;
   }
 
   update() {
+    this.game.scoreText.bringToTop();
     this.game.scoreText.text = this.getScoreString();
   }
 
@@ -22,7 +24,11 @@ export default class {
     this.enemiesRemaining = count;
   }
 
+  setCurrentWave(waveCount){
+    this.currentWave = waveCount;
+  }
+
   getScoreString() {
-    return `Enemies Remaining:${this.enemiesRemaining}`;
+    return `Enemies: ${this.enemiesRemaining}\nWave: ${this.currentWave}`;
   }
 }

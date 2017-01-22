@@ -21,6 +21,7 @@ export default class {
   update() {
     // Update score board
     this.hudManager.getManager('score').setEnemyCount(this.enemies.countLiving());
+    this.hudManager.getManager('score').setCurrentWave(this.currentWave);
 
     if (!this.hasWaveInProgress) {
       return;
