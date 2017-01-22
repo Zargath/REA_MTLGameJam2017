@@ -36,19 +36,19 @@ export default class extends Phaser.Sprite {
   }
 
   update() {
-    if (this.cursors.left.isDown) {
+    if (this.cursors.left.isDown || this.game.input.keyboard.isDown(Phaser.KeyCode.A)) {
       this.angle -= 4;
-    } else if (this.cursors.right.isDown) {
+    } else if (this.cursors.right.isDown || this.game.input.keyboard.isDown(Phaser.KeyCode.D)) {
       this.angle += 4;
     }
 
-    if (this.cursors.up.isDown) {
+    if (this.cursors.up.isDown || this.game.input.keyboard.isDown(Phaser.KeyCode.W)) {
       if (this.currentSpeed < this.maxSpeed) {
         this.currentSpeed += this.acceleration;
       }
     }
 
-    if (!this.cursors.up.isDown && this.currentSpeed > 0) {
+    if ((!this.cursors.up.isDown && !this.game.input.keyboard.isDown(Phaser.KeyCode.W)) && this.currentSpeed > 0) {
       this.currentSpeed -= this.acceleration;
     }
 
