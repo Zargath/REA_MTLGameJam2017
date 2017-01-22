@@ -31,6 +31,13 @@ export default class extends Phaser.State {
     this.load.image('thrusters', 'assets/images/thrusters.png');
     this.load.shader('stars', 'assets/shaders/stars.frag');
 
+    this.load.image('powerUp_frame1', 'assets/images/frame1.png');
+    this.load.image('powerUp_frame2', 'assets/images/frame2.png');
+    this.load.image('powerUp_frame3', 'assets/images/frame3.png');
+    this.load.image('powerUp_frame4', 'assets/images/frame4.png');
+    this.load.image('powerUp_frame5', 'assets/images/frame5.png');
+    this.load.image('powerUp_frame6', 'assets/images/frame7.png');
+
     this.load.spritesheet('button_start', 'assets/images/start_button.png');
     this.load.spritesheet('button_howtoplay', 'assets/images/howtoplay_button.png');
   }
