@@ -15,3 +15,5 @@ export const getRandomArbitrary = (min, max) => (Math.random() * (max - min)) + 
 export const getRandomInt = (min, max) => Math.floor(Math.random() * ((max - min) + 1)) + min;
 
 export const numberWithCommas = x => x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+
+export const radiansToDegrees = radians => (radians * 180) / Math.PI;

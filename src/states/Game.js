@@ -1,16 +1,15 @@
 /* globals __DEV__ */
 import Phaser from 'phaser';
-import DeathCircleManager from '../Manager/DeathCircleManager';
+import DeathCircleManager from '../managers/DeathCircleManager';
 import Blob from '../sprites/Blob';
 import Waveman from '../sprites/Waveman';
 import Background from '../sprites/Background';
 import HUDManager from '../managers/HUDManager';
 import SoundManager from '../managers/SoundManager';
+import SoundTrackManager from '../managers/SoundTrackManager';
 
 
 export default class extends Phaser.State {
-  init() { }
-  preload() { }
 
   create() {
     // Setup board
@@ -54,7 +53,6 @@ export default class extends Phaser.State {
     this.addPlayer();
 
     // Define loops
-    this.addBlob();
     this.blobLoop = this.stateTimer.loop(blobTimekeeper, this.addBlob, this);
     this.dificultyLoop = this.stateTimer.loop(dificultyTikekeeper, this.increaseDificulty, this);
 
@@ -66,17 +64,30 @@ export default class extends Phaser.State {
 
     this.addDeathCircle();
 
+    this.soundTrackManager = new SoundTrackManager({ game: this.game });
+    this.soundTrackManager.startSoundTrack();
+
     this.game.physics.startSystem(Phaser.Physics.ARCADE);
   }
 
   update() {
-    this.game.physics.arcade.collide(this.player.weapon.bullets, this.enemies, this.logCollision, null, this);
+    this.game.physics.arcade.collide(this.player.weapon.bullets, this.enemies, this.playerHitsEnemy, null, this);
+
+    this.enemies.forEach((enemy) => {
+      this.game.physics.arcade.collide(this.player, enemy.weapon.bullets, this.enemyHitsPalyer, null, this);
+    });
+
     this.hudManager.update();
 
     this.game.physics.arcade.collide(this.player, this.deathCircleManager.getDeathCircleGroup(), this.playerDeathCircleCollision, null, this);
+
+    if (this.deathCircleManager.deathCircleIsRed()) {
+      this.soundTrackManager.playAlarmingSoundtrack();
+    }
   }
 
-  logCollision(bullet, enemy) {
+
+  playerHitsEnemy(bullet, enemy) {
     const explosion = this.explosions.getFirstExists(false);
     if (explosion) {
       explosion.reset(bullet.body.x + bullet.body.halfWidth, bullet.body.y + bullet.body.halfHeight);
@@ -93,12 +104,28 @@ export default class extends Phaser.State {
     this.deathCircleManager.pushAway(5);
   }
 
+  enemyHitsPalyer(player, bullet) {
+    const explosion = this.explosions.getFirstExists(false);
+    if (explosion) {
+      explosion.scale.x = 0.2;
+      explosion.scale.y = 0.2;
+      explosion.reset(bullet.body.x + bullet.body.halfWidth, bullet.body.y + bullet.body.halfHeight);
+      explosion.body.velocity.y = player.body.velocity.y;
+      explosion.alpha = 0.7;
+      explosion.play('explosion', 30, false, true);
+    }
+
+    bullet.kill();
+    this.deathCircleManager.pullIn(10);
+  }
+
   playerDeathCircleCollision() {
     this.player.kill();
     this.game.time.events.add(Phaser.Timer.SECOND, this.transitionToGameover, this);
   }
 
   transitionToGameover() {
+    this.soundTrackManager.stopSoundTracks();
     this.game.state.start('GameOver');
   }
 
@@ -137,9 +164,6 @@ export default class extends Phaser.State {
     if (this.blobLoop.delay > 300) {
       this.blobLoop.delay -= 5;
     }
-  }
-
-  render() {
   }
 
 }

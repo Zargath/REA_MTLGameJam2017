@@ -1,4 +1,5 @@
 import Phaser from 'phaser';
+import * as Utils from '../utils';
 
 export default class extends Phaser.Sprite {
 
@@ -13,6 +14,13 @@ export default class extends Phaser.Sprite {
     this.anchor.setTo(0.5);
     this.speed = 200;
 
+    // Configure Weapons
+    this.weapon = this.game.add.weapon(30, 'waveman_bullet_blue');
+    this.weapon.bulletKillType = Phaser.Weapon.KILL_WORLD_BOUNDS;
+    this.weapon.bulletSpeed = 300;
+    this.weapon.fireRate = 3000;
+    this.weapon.trackSprite(this, 0, 0, false);
+
     // Physics
     this.game.physics.enable(this, Phaser.Physics.ARCADE);
     this.body.drag.set(0.2);
@@ -21,6 +29,17 @@ export default class extends Phaser.Sprite {
   }
 
   update() {
+    if (this.alive) {
+      this.move();
+      this.shootPlayer();
+    }
+  }
+
+  shootPlayer(){
+    this.weapon.fireAtSprite(this.player);
+  }
+
+  move(){
     const distanceToPlayer = this.game.physics.arcade.distanceBetween(this, this.player);
 
     if (distanceToPlayer < 300 && !this.movingRand) {
@@ -38,9 +57,9 @@ export default class extends Phaser.Sprite {
 
   dies() {
     this.kill();
+
     if (typeof this.game.deathCircleManager != 'undefined') {
       this.game.deathCircleManager.pushAway(10);
     }
-
   }
 }

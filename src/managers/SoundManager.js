@@ -8,6 +8,7 @@ export default class {
     this.soundGroups.set('waveman_long_laser_shot', ['waveman_long_laser_shot_1', 'waveman_long_laser_shot_2', 'waveman_long_laser_shot_3', 'waveman_long_laser_shot_4', 'waveman_long_laser_shot_5']);
     this.soundGroups.set('waveman_smooth_laser_shot', ['waveman_smooth_laser_shot_1', 'waveman_smooth_laser_shot_2', 'waveman_smooth_laser_shot_3', 'waveman_smooth_laser_shot_4']);
     this.soundGroups.set('waveman_weird_alien_noise', ['waveman_weird_alien_noise_1', 'waveman_weird_alien_noise_2', 'waveman_weird_alien_noise_3', 'waveman_weird_alien_noise_4']);
+    this.soundGroups.set();
   }
 
   playSoundFromGroup(group) {
