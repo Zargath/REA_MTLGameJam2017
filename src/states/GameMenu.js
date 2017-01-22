@@ -13,6 +13,9 @@ export default class extends Phaser.State {
   }
 
   create() {
+
+    this.game.world.setBounds(0, 0, document.documentElement.clientWidth, document.documentElement.clientHeight);
+
     const background = new StaticBackground({ game: this.game, background: 'background_intro' });
 
     this.helpMenu = new HelpMenu({ game: this.game });

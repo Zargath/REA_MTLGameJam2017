@@ -6,44 +6,29 @@ export default class {
     this.game.scoreText = this.game.add.text(10, 10, this.getScoreString());
     this.game.scoreText.boundsAlignH = 'left';
     this.game.scoreText.font = 'Press Start 2P';
-    this.game.scoreText.fontSize = 40;
+    this.game.scoreText.fontSize = 25;
     this.game.scoreText.fill = '#FF0000';
     this.game.scoreText.fixedToCamera = true;
-    // Integer values for tracking various score mechanics
-    this.enemyKillCount = 0;
-    this.timerScoreCount = 0;
-    this.circleScoreCount = 0;
 
-    this.enemyKillCountMultiplier = 3;
-    this.timerScoreCountMultiple = 2;
-    this.circleScoreCountMultiplier = 2;
+    // Integer values for tracking various score mechanics
+    this.enemiesRemaining = 0;
+    this.currentWave = 0;
   }
 
   update() {
+    this.game.scoreText.bringToTop();
     this.game.scoreText.text = this.getScoreString();
   }
 
-  increaseEnemyKillCount() {
-    this.enemyKillCount += 1;
+  setEnemyCount(count){
+    this.enemiesRemaining = count;
   }
 
-  getEnemyScore() {
-    return this.enemyKillCount * this.enemyKillCountMultiplier;
-  }
-
-  getTimerScore() {
-    return this.timerScoreCount * this.timerScoreCountMultiple;
-  }
-
-  getCircleScore() {
-    return this.circleScoreCount * this.circleScoreCountMultiplier;
-  }
-
-  getScore() {
-    return this.getCircleScore() + this.getEnemyScore() + this.getTimerScore();
+  setCurrentWave(waveCount){
+    this.currentWave = waveCount;
   }
 
   getScoreString() {
-    return `Score:${this.getScore()}`;
+    return `Enemies: ${this.enemiesRemaining}\nWave: ${this.currentWave}`;
   }
 }

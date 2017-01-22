@@ -10,9 +10,14 @@ export default class extends Phaser.Sprite {
     this.player = player;
     this.movingRand = false;
 
+    //sprite animation
+    this.animations.add('thrusters');
+    this.animations.play('thrusters', 50,true)
+
     // Setup
     this.anchor.setTo(0.5);
     this.speed = 200;
+    this.scale.setTo(-0.1,-0.1);
 
     // Configure Weapons
     this.weapon = this.game.add.weapon(30, 'waveman_bullet_blue');
@@ -26,6 +31,7 @@ export default class extends Phaser.Sprite {
     this.body.drag.set(0.2);
     this.body.maxVelocity.setTo(400, 400);
     this.body.collideWorldBounds = true;
+    this.body.setSize(400,400);
 
     //  An explosion pool
     this.explosions = this.game.add.group();
@@ -44,19 +50,18 @@ export default class extends Phaser.Sprite {
   update() {
     if (this.alive) {
       this.move();
-      this.shootPlayer();
     }
   }
 
-  shootPlayer() {
-    this.weapon.fireAtSprite(this.player);
-  }
-
-  move() {
+  move(){
     const distanceToPlayer = this.game.physics.arcade.distanceBetween(this, this.player);
 
+    this.rotation = game.physics.arcade.angleToXY(this, this.player.x, this.player.y);
+                
     if (distanceToPlayer < 300 && !this.movingRand) {
-      this.game.add.tween(this).to({ x: this.game.world.randomX, y: this.game.world.randomY }, 1000, Phaser.Easing.Quadratic.InOut);
+      var rndX = this.game.world.randomX;
+      var rndY = this.game.world.randomY;
+      this.game.add.tween(this).to({ x: rndX, y: rndY}, 1000, Phaser.Easing.Quadratic.InOut);
       this.movingRand = true;
 
       // Hack to move randomly for 1 second
@@ -68,7 +73,7 @@ export default class extends Phaser.Sprite {
     }
   }
 
-  hitByBullet(bullet) {
+    hitByBullet(bullet){
     const explosion = this.explosions.getFirstExists(false);
     if (explosion) {
       explosion.reset(bullet.body.x + bullet.body.halfWidth, bullet.body.y + bullet.body.halfHeight);
@@ -85,13 +90,10 @@ export default class extends Phaser.Sprite {
 
   dies() {
     this.kill();
-
-    if (typeof this.game.deathCircleManager !== 'undefined') {
-      this.game.deathCircleManager.pushAway(10);
-    }
   }
 
-  HitPlayer(){
-    
+  HitPlayer(player, suicidalBlob){
+    suicidalBlob.kill();
+    return true;
   }
 }

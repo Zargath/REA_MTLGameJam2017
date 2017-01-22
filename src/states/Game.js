@@ -6,6 +6,7 @@ import WaveManager from '../managers/WaveManager';
 import SoundManager from '../managers/SoundManager';
 import SoundTrackManager from '../managers/SoundTrackManager';
 
+
 export default class extends Phaser.State {
 
   create() {
@@ -30,6 +31,7 @@ export default class extends Phaser.State {
     });
 
     this.game.soundTrackManager.startSoundTrack();
+
     this.game.physics.startSystem(Phaser.Physics.ARCADE);
 
     // Start game!
