@@ -54,30 +54,25 @@ export default class extends Phaser.State {
     this.addDeathCircle();
 
     this.game.physics.startSystem(Phaser.Physics.ARCADE);
-
-    //var scanlineFilter = new Phaser.Filter(this.game, null, game.cache.getShader('stars'));
-    //this.game.world.filters = [scanlineFilter];
   }
 
   update() {
     this.game.physics.arcade.collide(this.player.weapon.bullets, this.enemies, this.logCollision, null, this);
     this.hudManager.update();
 
-    for (var i = 0; i < this.deathCircleManager.deathCircles.length; i++) {
-      this.game.physics.arcade.collide(this.player, this.deathCircleManager.deathCircles[i], this.playerDeathCircleCollision, null, this);
-    }
+    this.game.physics.arcade.collide(this.player, this.deathCircleManager.getDeathCircleGroup(), this.playerDeathCircleCollision, null, this);
   }
 
   logCollision(bullet, enemy) {
-    enemy.dies()
+    enemy.dies();
     bullet.kill();
     this.hudManager.getManager('score').increaseEnemyKillCount();
     this.soundManager.playSoundFromGroup('alien_damage');
     this.deathCircleManager.pushAway(5);
   }
 
-  playerDeathCircleCollision(player, deathCircle) {
-    this.game.state.start("Splash");
+  playerDeathCircleCollision() {
+    this.game.state.start('Splash');
   }
 
   addBackground() {
@@ -90,8 +85,8 @@ export default class extends Phaser.State {
       {
         game: this.game,
         startingRadius: 1000,
-        dots: 200
-      }
+        dots: 200,
+      },
     );
 
     this.deathCircleManager.initialize();
