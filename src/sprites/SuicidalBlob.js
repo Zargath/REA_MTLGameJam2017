@@ -45,6 +45,8 @@ export default class extends Phaser.Sprite {
     this.explosions.forEach((explosion) => {
       explosion.animations.add('explosion');
     });
+
+    this.isDead = false;
   }
 
   update() {
@@ -86,6 +88,7 @@ export default class extends Phaser.Sprite {
 
     this.dies();
     bullet.kill();
+    this.isDead = true;
   }
 
   dies() {
@@ -101,6 +104,7 @@ export default class extends Phaser.Sprite {
       explosion.play('explosion', 30, false, true);
     }
     suicidalBlob.kill();
+    suicidalBlob.isDead = true;
     return true;
   }
 }

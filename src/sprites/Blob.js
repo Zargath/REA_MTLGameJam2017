@@ -39,6 +39,8 @@ export default class extends Phaser.Sprite {
     this.explosions.forEach((explosion) => {
       explosion.animations.add('explosion');
     });
+
+    this.isDead = false;
   }
 
   update() {
@@ -81,6 +83,7 @@ export default class extends Phaser.Sprite {
 
     this.dies();
     bullet.kill();
+    this.isDead = true;
   }
 
   dies() {
@@ -92,6 +95,6 @@ export default class extends Phaser.Sprite {
   }
 
   HitPlayer(){
-    
+
   }
 }

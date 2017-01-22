@@ -19,6 +19,7 @@ export default class extends Phaser.Sprite {
     this.weapon.bulletSpeed = 600;
     this.weapon.fireRate = 100;
     this.weapon.trackSprite(this, 0, 0, true);
+    this.weaponType = 1;
 
     // Setup Physics
     this.game.physics.enable(this, Phaser.Physics.ARCADE);
@@ -99,8 +100,18 @@ export default class extends Phaser.Sprite {
     }
 
     if (this.fireButton.isDown) {
-      this.weapon.fire();
-      this.weapon.onFire.add(this.fireLaserSound, this);
+      if(this.weaponType == 1){
+        this.weapon.bulletAngleVariance = 10;
+        this.weapon.fireRate = 100;
+        this.weapon.fire();
+        this.weapon.onFire.add(this.fireLaserSound, this);
+      } else if (this.weaponType == 2) {
+        this.weapon.bulletAngleVariance = 400;
+        this.weapon.fireRate = 50;
+        this.weapon.fire();
+        this.weapon.onFire.add(this.fireLaserSound, this);
+      }
+
     }
 
     this.emitter.x = this.x;
@@ -110,6 +121,16 @@ export default class extends Phaser.Sprite {
 
   fireLaserSound() {
     this.game.soundManager.playSound('waveman_laser_shot_1', 0.25);
+  }
+
+  empowerPlayer(){
+    this.weaponType = 2;       
+    this.game.time.events.add(Phaser.Timer.SECOND * 2, this.depowerPlayer, this);
+
+  }
+
+  depowerPlayer(){
+    this.weaponType = 1; 
   }
 
 }

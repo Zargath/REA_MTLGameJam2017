@@ -2,7 +2,8 @@ import Phaser from 'phaser';
 import Blob from '../sprites/Blob';
 import Waveman from '../sprites/Waveman';
 import DeathCircleManager from '../managers/DeathCircleManager';
-import SuicidalBlob from '../sprites/SuicidalBlob'
+import SuicidalBlob from '../sprites/SuicidalBlob';
+import PowerUp from '../sprites/PowerUp';
 
 export default class {
   constructor({ game, hudManager }) {
@@ -18,13 +19,13 @@ export default class {
     this.enemies = this.game.add.group();
     this.enemies.enableBody = true;
 
-    this.suicidalBlobs = this.game.add.group();
-    this.suicidalBlobs.enableBody = true;
+    this.powerUps = this.game.add.group();
+    this.powerUps.enableBody = true;
   }
 
   update() {
     // Update score board
-    let enemyKillCount = this.enemies.countLiving() + this.suicidalBlobs.countLiving();
+    let enemyKillCount = this.enemies.countLiving();
     this.hudManager.getManager('score').setEnemyCount(enemyKillCount);
     this.hudManager.getManager('score').setCurrentWave(this.currentWave);
 
@@ -36,6 +37,20 @@ export default class {
     this.game.physics.arcade.collide(this.player.weapon.bullets, this.enemies, (bullet, enemy) => {
       this.deathCircleManager.pushAway(5);
       enemy.hitByBullet(bullet);
+            if(typeof enemyDeathToPowerUp == 'undefined'){
+              this.enemyDeathToPowerUp = 0;
+            }
+      this.enemyDeathToPowerUp++;
+      let rndNumber = game.rnd.integerInRange(0, 100);
+      if (enemy.isDead && rndNumber > 80) {
+        this.powerUps.add(new PowerUp({
+          game: this.game, 
+          asset: 'red_gem', 
+          player: this.game.player, 
+          spawnPositionX: enemy.x, 
+          spawnPositionY: enemy.y
+        }));
+      }
     }, null, this);
 
     // Check for enemy fire on player
@@ -50,7 +65,7 @@ export default class {
     this.enemies.forEach((enemy) => {
       this.game.physics.arcade.collide(this.player, enemy, (player, enemy) => {
         let playerGotHit = enemy.HitPlayer(player, enemy);
-        if(playerGotHit){
+        if (playerGotHit) {
           this.deathCircleManager.pullIn(20);
         }
       }, null, this);
@@ -62,6 +77,12 @@ export default class {
       this.player.dies();
       this.game.won = false;
       this.game.state.start('GameOver');
+    }, null, this);
+
+        // Check if player get the powerup
+    this.game.physics.arcade.collide(this.player, this.powerUps, (player, powerUp) => {
+    player.empowerPlayer();
+    powerUp.kill();
     }, null, this);
 
     // Check for death circle sound
@@ -149,18 +170,18 @@ export default class {
     // Add blobs
     let blobNum = 5 + this.dificultyLvl * 10;
     for (let i = 0; i < blobNum; i++) {
-      if(i % 2 == 0)
-      this.enemies.add(new Blob({
-        game: this.game,
-        asset: 'ufo',
-        player: this.player,
-      }));
+      if (i % 2 == 0)
+        this.enemies.add(new Blob({
+          game: this.game,
+          asset: 'ufo',
+          player: this.player,
+        }));
       else {
-      this.enemies.add(new SuicidalBlob({
-        game: this.game,
-        asset: 'suicidalBlob',
-        player: this.player,
-      }));
+        this.enemies.add(new SuicidalBlob({
+          game: this.game,
+          asset: 'suicidalBlob',
+          player: this.player,
+        }));
       }
 
     }
