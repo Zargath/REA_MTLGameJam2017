@@ -107,7 +107,7 @@ export default class extends Phaser.State {
     }
 
     bullet.kill();
-    this.deathCircleManager.pullIn(5);
+    this.deathCircleManager.pullIn(10);
   }
 
   playerDeathCircleCollision() {
