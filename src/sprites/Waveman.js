@@ -29,6 +29,16 @@ export default class extends Phaser.Sprite {
     // Controls
     this.cursors = this.game.input.keyboard.createCursorKeys();
     this.fireButton = this.game.input.keyboard.addKey(Phaser.KeyCode.SPACEBAR);
+
+        // Particles
+    this.emitter = game.add.emitter(this.body.x, this.body.y, 200);
+
+    this.emitter.makeParticles('thrusters');
+
+    this.emitter.setScale(0.01, 0.04, 0.01, 0.04);
+    this.emitter.gravity = 200;
+
+    this.emitter.start(false, 300, 100);
   }
 
   removeBullet(bullet) {
@@ -60,6 +70,10 @@ export default class extends Phaser.Sprite {
       this.weapon.fire();
       this.weapon.onFire.add(this.fireLaserSound, this);
     }
+
+    this.emitter.x = this.x;
+    this.emitter.y = this.y;
+
   }
 
   fireLaserSound(){

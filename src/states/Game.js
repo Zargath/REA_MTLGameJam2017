@@ -7,7 +7,7 @@ import Background from '../sprites/Background';
 import HUDManager from '../managers/HUDManager';
 import SoundManager from '../managers/SoundManager';
 import SoundTrackManager from '../managers/SoundTrackManager';
-
+import SuicidalBlob from '../sprites/SuicidalBlob'
 
 export default class extends Phaser.State {
 
@@ -33,6 +33,9 @@ export default class extends Phaser.State {
     this.enemies = this.game.add.group();
     this.enemies.enableBody = true;
 
+    this.suicidalBlobs = this.game.add.group();
+    this.suicidalBlobs.enableBody = true;
+
     //  An explosion pool
     this.explosions = this.game.add.group();
     this.explosions.enableBody = true;
@@ -54,6 +57,7 @@ export default class extends Phaser.State {
 
     // Define loops
     this.blobLoop = this.stateTimer.loop(blobTimekeeper, this.addBlob, this);
+    this.blobLoop = this.stateTimer.loop(blobTimekeeper, this.addSuicidalBlob, this);
     this.dificultyLoop = this.stateTimer.loop(dificultyTikekeeper, this.increaseDificulty, this);
 
     // Set up camera
@@ -71,23 +75,43 @@ export default class extends Phaser.State {
   }
 
   update() {
-    this.game.physics.arcade.collide(this.player.weapon.bullets, this.enemies, this.playerHitsEnemy, null, this);
+    this.game.physics.arcade.collide(this.player.weapon.bullets, this.enemies, this.playerBulletHitEnnemy, null, this);
+    this.game.physics.arcade.collide(this.player.weapon.bullets, this.suicidalBlobs, this.playerBulletHitSuicidalBlob, null, this);
 
     this.enemies.forEach((enemy) => {
-      this.game.physics.arcade.collide(this.player, enemy.weapon.bullets, this.enemyHitsPalyer, null, this);
+      this.game.physics.arcade.collide(this.player, enemy.weapon.bullets, this.ennemyBulletHitPlayer
+        , null, this);
+    });
+
+    this.suicidalBlobs.forEach((suicidalBlob) => {
+      this.game.physics.arcade.collide(this.player, suicidalBlob, this.suicidalBlobHitPlayer, null, this);
     });
 
     this.hudManager.update();
 
     this.game.physics.arcade.collide(this.player, this.deathCircleManager.getDeathCircleGroup(), this.playerDeathCircleCollision, null, this);
-  
-    if (this.deathCircleManager.deathCircleIsRed()) {  
-        this.soundTrackManager.playAlarmingSoundtrack();
-      }
-    }
-  
 
-  playerHitsEnemy(bullet, enemy) {
+    if (this.deathCircleManager.deathCircleIsRed()) {
+      this.soundTrackManager.playAlarmingSoundtrack();
+    }
+  }
+
+  suicidalBlobHitPlayer(player, suicidalBlob) {
+    const explosion = this.explosions.getFirstExists(false);
+    if (explosion) {
+      explosion.reset(suicidalBlob.body.x + suicidalBlob.body.halfWidth, suicidalBlob.body.y + suicidalBlob.body.halfHeight);
+      explosion.body.velocity.y = suicidalBlob.body.velocity.y;
+      explosion.alpha = 0.7;
+      explosion.play('explosion', 30, false, true);
+    }
+
+    this.deathCircleManager.pullIn(20);
+    this.soundManager.playSoundFromGroup('alien_damage');
+
+    suicidalBlob.dies();
+  }
+
+  playerBulletHitEnnemy(bullet, enemy) {
     const explosion = this.explosions.getFirstExists(false);
     if (explosion) {
       explosion.reset(bullet.body.x + bullet.body.halfWidth, bullet.body.y + bullet.body.halfHeight);
@@ -104,7 +128,25 @@ export default class extends Phaser.State {
     this.deathCircleManager.pushAway(5);
   }
 
-  enemyHitsPalyer(player, bullet) {
+    playerBulletHitSuicidalBlob(bullet, suicidalBlob) {
+    const explosion = this.explosions.getFirstExists(false);
+    if (explosion) {
+      explosion.reset(bullet.body.x + bullet.body.halfWidth, bullet.body.y + bullet.body.halfHeight);
+      explosion.body.velocity.y = suicidalBlob.body.velocity.y;
+      explosion.alpha = 0.7;
+      explosion.play('explosion', 30, false, true);
+    }
+
+    suicidalBlob.dies();
+    bullet.kill();
+
+    this.hudManager.getManager('score').increaseEnemyKillCount();
+    this.soundManager.playSoundFromGroup('alien_damage');
+    this.deathCircleManager.pushAway(10);
+  }
+
+
+  ennemyBulletHitPlayer(player, bullet) {
     const explosion = this.explosions.getFirstExists(false);
     if (explosion) {
       explosion.scale.x = 0.2;
@@ -123,7 +165,7 @@ export default class extends Phaser.State {
   playerDeathCircleCollision() {
     this.soundTrackManager.stopSoundTracks();
     this.game.state.start('Splash');
-    this.soundManager.playSound('WaveMan_Explosion',1.30);
+    this.soundManager.playSound('WaveMan_Explosion', 1.30);
   }
 
   addBackground() {
@@ -155,6 +197,15 @@ export default class extends Phaser.State {
       player: this.player,
     });
     this.enemies.add(blob);
+  }
+
+  addSuicidalBlob() {
+    const suicidalBlob = new SuicidalBlob({
+      game: this.game,
+      asset: 'suicidalBlob',
+      player: this.player,
+    });
+    this.suicidalBlobs.add(suicidalBlob);
   }
 
   increaseDificulty() {

@@ -24,8 +24,10 @@ export default class extends Phaser.State {
     this.loadAudio();
 
     this.load.image('ufo', 'assets/images/ufo.png');
+    this.load.spritesheet('suicidalBlob', 'assets/images/suicidalBlob.png', 512, 696, 4);
     this.load.image('waveman', 'assets/images/waveman.png');
     this.load.image('background', 'assets/images/starfield.jpg');
+    this.load.image('thrusters', 'assets/images/thrusters.png');
     this.load.shader('stars', 'assets/shaders/stars.frag');
   }
 
