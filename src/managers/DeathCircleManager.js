@@ -68,6 +68,15 @@ export default class {
     return this.deathCirclesGroup;
   }
 
+  deathCircleIsRed(){
+    const radius = this.startingRadius * Math.cos(this.test);
+    if (radius < 300.0){
+        return true;
+    } else {
+        return false;
+    }
+  }
+
   pushAway(distance) {
     this.test += 0.001;
     const radius = this.startingRadius * Math.cos(this.test);
