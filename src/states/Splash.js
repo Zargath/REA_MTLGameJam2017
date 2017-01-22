@@ -26,11 +26,17 @@ export default class extends Phaser.State {
     this.load.image('ufo', 'assets/images/ufo.png');
     this.load.image('waveman', 'assets/images/waveman.png');
     this.load.image('background', 'assets/images/starfield.png');
+    this.load.image('background_intro', 'assets/images/bg_intro.png');
     this.load.shader('stars', 'assets/shaders/stars.frag');
+
+    this.load.spritesheet('button_start', 'assets/images/start_button.png');
   }
 
   create() {
-    this.state.start('GameOver');
+    this.state.start('GameIntro');
+  }
+
+  render() {
   }
 
   loadAudio() {
