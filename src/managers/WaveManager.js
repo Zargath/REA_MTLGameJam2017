@@ -143,7 +143,9 @@ export default class {
   createEnemies() {
     // This will destroy all enemies.
     this.enemies.removeAll(true);
-
+    this.enemies.forEach((enemy) => {
+      enemy.bullets.removeAll(true);
+    });
     // Add blobs
     let blobNum = 5 + this.dificultyLvl * 10;
     for (let i = 0; i < blobNum; i++) {
