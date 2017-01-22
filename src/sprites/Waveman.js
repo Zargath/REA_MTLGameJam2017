@@ -95,6 +95,6 @@ export default class extends Phaser.Sprite {
   }
 
   fireLaserSound() {
-    this.soundManager.playSound('waveman_laser_shot_1', 0.25);
+    this.game.soundManager.playSound('waveman_laser_shot_1', 0.25);
   }
 }
