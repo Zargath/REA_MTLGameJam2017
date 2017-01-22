@@ -1,6 +1,7 @@
 import Phaser from 'phaser';
 import StaticBackground from '../sprites/StaticBackground';
 import ColorGenerator from '../Generators/ColorGenerator';
+import HelpMenu from './Popups/HelpMenu';
 
 export default class extends Phaser.State {
   init() {
@@ -14,11 +15,14 @@ export default class extends Phaser.State {
   create() {
     const background = new StaticBackground({ game: this.game, background: 'background_intro' });
 
+    this.helpMenu = new HelpMenu({ game: this.game });
+
     this.game.add.existing(background);
     this.game.title = 'Earth Defender : Alien Crisis';
 
     const colorGenerator = new ColorGenerator();
 
+    const xOffset = (document.documentElement.clientWidth - 800) / 2;
     const xPos = document.documentElement.clientWidth / 2;
     const yPos = ((document.documentElement.clientHeight - 600) / 2) + 40;
 
@@ -33,11 +37,18 @@ export default class extends Phaser.State {
 
     this.introText.anchor.set(0.5);
 
+    this.closeMenuButton = this.game.input.keyboard.addKey(Phaser.KeyCode.ESC);
+
     this.startButton = this.game.add.button(xPos, yPos + 200, 'button_start', this.goToMenu, this);
-    this.menuButton = this.game.add.button(xPos, yPos + 350, 'button_howtoplay', this.goToMenu, this);
+    this.menuButton = this.game.add.button(xPos, yPos + 350, 'button_howtoplay', this.showHelpMenu, this);
+
 
     this.startButton.anchor.set(0.5);
     this.menuButton.anchor.set(0.5);
+  }
+
+  showHelpMenu() {
+    this.helpMenu.show();
   }
 
   showHowToPlay() {
@@ -49,7 +60,9 @@ export default class extends Phaser.State {
   }
 
   update() {
-
+    if (this.closeMenuButton.isDown) {
+      this.helpMenu.hide();
+    }
   }
 
   render() {
