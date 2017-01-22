@@ -93,6 +93,13 @@ export default class extends Phaser.Sprite {
   }
 
   HitPlayer(player, suicidalBlob){
+    const explosion = this.explosions.getFirstExists(false);
+    if (explosion) {
+      explosion.reset(suicidalBlob.body.x + suicidalBlob.body.halfWidth, suicidalBlob.body.y + suicidalBlob.body.halfHeight);
+      explosion.body.velocity.y = this.body.velocity.y;
+      explosion.alpha = 0.7;
+      explosion.play('explosion', 30, false, true);
+    }
     suicidalBlob.kill();
     return true;
   }
