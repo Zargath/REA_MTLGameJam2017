@@ -9,6 +9,7 @@ export default class {
     this.hudManager = hudManager;
 
     this.hasWaveInProgress = false;
+    this.dificultyLvl = 0;
     this.currentWave = 0;
     this.maxWave = 3;
 
@@ -18,20 +19,20 @@ export default class {
   }
 
   update() {
+    // Update score board
+    this.hudManager.getManager('score').setEnemyCount(this.enemies.countLiving());
+
     if (!this.hasWaveInProgress) {
       return;
     }
 
-        // Check for player fire on enemy
+    // Check for player fire on enemy
     this.game.physics.arcade.collide(this.player.weapon.bullets, this.enemies, (bullet, enemy) => {
       this.deathCircleManager.pushAway(5);
       enemy.hitByBullet(bullet);
-      if (!enemy.alive) {
-        this.hudManager.getManager('score').increaseEnemyKillCount();
-      }
     }, null, this);
 
-        // Check for enemy fire on player
+    // Check for enemy fire on player
     this.enemies.forEach((enemy) => {
       this.game.physics.arcade.collide(this.player, enemy.weapon.bullets, (player, bullet) => {
         this.deathCircleManager.pullIn(10);
@@ -39,7 +40,7 @@ export default class {
       }, null, this);
     });
 
-        // Check if player hits the death circle
+    // Check if player hits the death circle
     this.game.physics.arcade.collide(this.player, this.deathCircleManager.getDeathCircleGroup(), (player, circle) => {
       this.game.soundTrackManager.stopSoundTracks();
       this.player.dies();
@@ -47,35 +48,36 @@ export default class {
       this.game.state.start('GameOver');
     }, null, this);
 
-        // Check for death circle sound
+    // Check for death circle sound
     if (this.deathCircleManager.deathCircleIsRed()) {
       this.game.soundTrackManager.playAlarmingSoundtrack();
     }
 
-        // Check for Wave End
+    // Check for Wave End
     this.checkForWaveEnd();
   }
 
   startNextWave() {
-        // Next Wave Counter
+    // Next Wave Counter
     this.currentWave += 1;
+    this.dificultyLvl += 1;
 
-        // Check Game won
+    // Check Game won
     this.checkForGameWon();
 
-        // Generate player
+    // Generate player
     this.createOrResetPlayer();
 
-        // Generate Death Circle
+    // Generate Death Circle
     this.createOrResetDeathCircle();
 
-        // Generate enemies
+    // Generate enemies
     this.createEnemies();
 
-        // display 3 2 1 GO countdown
+    // display 3 2 1 GO countdown
     this.displayWaveIntro();
 
-        // Start Wave
+    // Start Wave
     this.hasWaveInProgress = true;
   }
 
@@ -125,16 +127,16 @@ export default class {
   createEnemies() {
         // This will destroy all enemies.
     this.enemies.removeAll(true);
-
-        // TODO: add enemies depending on difficulty.
-        // TODO: Add more types of enemies.
-    const blob = new Blob({
-      game: this.game,
-      asset: 'ufo',
-      player: this.player,
-    });
-
-    this.enemies.add(blob);
+    
+    // Add blobs
+    let blobNum = 5 + this.dificultyLvl * 10;
+    for(let i = 0; i < blobNum; i++){
+      this.enemies.add(new Blob({
+        game: this.game,
+        asset: 'ufo',
+        player: this.player,
+      }));
+    }
   }
 
   displayWaveIntro() {
