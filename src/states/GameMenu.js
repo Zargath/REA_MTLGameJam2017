@@ -20,7 +20,7 @@ export default class extends Phaser.State {
     const colorGenerator = new ColorGenerator();
 
     const xPos = document.documentElement.clientWidth / 2;
-    const yPos = (document.documentElement.clientHeight - 600) + 40;
+    const yPos = ((document.documentElement.clientHeight - 600) / 2) + 40;
 
     const randomHue = Math.random() * 360;
     const fillColor = colorGenerator.getRBGString(colorGenerator.HSVToRGB(randomHue, 0.5, 0.99));
