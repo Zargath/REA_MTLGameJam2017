@@ -10,6 +10,10 @@ export const setResponsiveWidth = (sprite, percent, parent) => {
   sprite.height = sprite.texture.height - ((sprite.texture.height * percentWidth) / 100);
 };
 
-export const radiansToDegrees = (radians) => {
-  return radians * 180 / Math.PI;
-}
+export const getRandomArbitrary = (min, max) => (Math.random() * (max - min)) + min;
+
+export const getRandomInt = (min, max) => Math.floor(Math.random() * ((max - min) + 1)) + min;
+
+export const numberWithCommas = x => x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+
+export const radiansToDegrees = radians => (radians * 180) / Math.PI;

@@ -2,8 +2,8 @@ import Phaser from 'phaser';
 
 export default class extends Phaser.TileSprite {
 
-  constructor({ game }) {
-    super(game, 0, 0, game.canvas.width, game.canvas.height, 'background');
+  constructor({ game, background = 'background' }) {
+    super(game, 0, 0, game.canvas.width, game.canvas.height, background);
 
     this.game = game;
 

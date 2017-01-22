@@ -31,7 +31,20 @@ export default class extends Phaser.Sprite {
     this.body.drag.set(0.2);
     this.body.maxVelocity.setTo(400, 400);
     this.body.collideWorldBounds = true;
-        this.body.setSize(400,400);
+    this.body.setSize(400,400);
+
+    //  An explosion pool
+    this.explosions = this.game.add.group();
+    this.explosions.enableBody = true;
+    this.explosions.physicsBodyType = Phaser.Physics.ARCADE;
+    this.explosions.createMultiple(30, 'explosion');
+    this.explosions.setAll('anchor.x', 0.5);
+    this.explosions.setAll('anchor.y', 0.5);
+    this.explosions.setAll('scale.x', 0.5);
+    this.explosions.setAll('scale.y', 0.5);
+    this.explosions.forEach((explosion) => {
+      explosion.animations.add('explosion');
+    });
   }
 
   update() {
@@ -58,6 +71,21 @@ export default class extends Phaser.Sprite {
     } else if (!this.movingRand) {
       this.game.physics.arcade.moveToObject(this, this.player, this.speed);
     }
+  }
+
+    hitByBullet(bullet){
+    const explosion = this.explosions.getFirstExists(false);
+    if (explosion) {
+      explosion.reset(bullet.body.x + bullet.body.halfWidth, bullet.body.y + bullet.body.halfHeight);
+      explosion.body.velocity.y = this.body.velocity.y;
+      explosion.alpha = 0.7;
+      explosion.play('explosion', 30, false, true);
+    }
+
+    this.game.soundManager.playSoundFromGroup('alien_damage');
+
+    this.dies();
+    bullet.kill();
   }
 
   dies() {

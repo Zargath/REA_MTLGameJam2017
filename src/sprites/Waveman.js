@@ -26,6 +26,19 @@ export default class extends Phaser.Sprite {
     this.body.maxVelocity.setTo(400, 400);
     this.body.collideWorldBounds = true;
 
+    //  An explosion pool
+    this.explosions = this.game.add.group();
+    this.explosions.enableBody = true;
+    this.explosions.physicsBodyType = Phaser.Physics.ARCADE;
+    this.explosions.createMultiple(30, 'explosion');
+    this.explosions.setAll('anchor.x', 0.5);
+    this.explosions.setAll('anchor.y', 0.5);
+    this.explosions.setAll('scale.x', 0.5);
+    this.explosions.setAll('scale.y', 0.5);
+    this.explosions.forEach((explosion) => {
+      explosion.animations.add('explosion');
+    });
+
     // Controls
     this.cursors = this.game.input.keyboard.createCursorKeys();
     this.fireButton = this.game.input.keyboard.addKey(Phaser.KeyCode.SPACEBAR);
@@ -45,20 +58,39 @@ export default class extends Phaser.Sprite {
     this.bullets.remove(bullet);
   }
 
+  hitByBullet(bullet) {
+    const explosion = this.explosions.getFirstExists(false);
+    if (explosion) {
+      explosion.scale.x = 0.2;
+      explosion.scale.y = 0.2;
+      explosion.reset(bullet.body.x + bullet.body.halfWidth, bullet.body.y + bullet.body.halfHeight);
+      explosion.body.velocity.y = this.body.velocity.y;
+      explosion.alpha = 0.7;
+      explosion.play('explosion', 30, false, true);
+    }
+
+    this.game.soundManager.playSound('waveman_weird_alien_noise_3', 1.30);
+    bullet.kill();
+  }
+
+  dies() {
+    this.game.soundManager.playSound('WaveMan_Explosion', 1.30);
+  }
+
   update() {
-    if (this.cursors.left.isDown) {
+    if (this.cursors.left.isDown || this.game.input.keyboard.isDown(Phaser.KeyCode.A)) {
       this.angle -= 4;
-    } else if (this.cursors.right.isDown) {
+    } else if (this.cursors.right.isDown || this.game.input.keyboard.isDown(Phaser.KeyCode.D)) {
       this.angle += 4;
     }
 
-    if (this.cursors.up.isDown) {
+    if (this.cursors.up.isDown || this.game.input.keyboard.isDown(Phaser.KeyCode.W)) {
       if (this.currentSpeed < this.maxSpeed) {
         this.currentSpeed += this.acceleration;
       }
     }
 
-    if (!this.cursors.up.isDown && this.currentSpeed > 0) {
+    if ((!this.cursors.up.isDown && !this.game.input.keyboard.isDown(Phaser.KeyCode.W)) && this.currentSpeed > 0) {
       this.currentSpeed -= this.acceleration;
     }
 
@@ -76,7 +108,11 @@ export default class extends Phaser.Sprite {
 
   }
 
-  fireLaserSound(){
-        this.soundManager.playSound('waveman_laser_shot_1', 0.25);
+  fireLaserSound() {
+    this.game.soundManager.playSound('waveman_laser_shot_1', 0.25);
+  }
+
+  hitBySuicidalBlob(){
+    this.game.de
   }
 }
