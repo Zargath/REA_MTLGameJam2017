@@ -20,7 +20,7 @@ export default class extends Phaser.State {
     this.game.world.setBounds(0, 0, document.documentElement.clientWidth, document.documentElement.clientHeight);
 
     this.killCount = 0;
-    this.isSuccessful = false;
+    this.isSuccessful = this.game.won;
 
     this.killCountText = this.isSuccessful ? `Mostarian's Butchered: ${numberWithCommas(this.killCount)}` : `Human Death Count: ${numberWithCommas(this.killCount)}`;
 

@@ -6,7 +6,7 @@ import BootState from './states/Boot';
 import SplashState from './states/Splash';
 import GameState from './states/Game';
 import GameOver from './states/GameOver';
-import GameIntro from './states/Gameintro';
+import GameIntro from './states/GameIntro';
 import GameMenu from './states/GameMenu';
 
 class Game extends Phaser.Game {

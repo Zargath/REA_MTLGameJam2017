@@ -42,8 +42,6 @@ export default class extends Phaser.State {
 
     this.pressEnterTimer = this.game.time.events.loop(Phaser.Timer.SECOND * 0.8, this.toggleText, this);
     this.pressEnterTimer.timer.start();
-
-    this.pressEnterTextIsVisible = true;
   }
 
   toggleText() {
@@ -57,6 +55,7 @@ export default class extends Phaser.State {
   update() {
     this.game.introText.y -= 1;
     if (this.skipButton.isDown) {
+      this.introSkipAuto.timer.destroy();
       this.state.start('GameMenu');
     }
   }
