@@ -32,16 +32,8 @@ export default class {
       return;
     }
 
-    this.game.physics.arcade.collide(this.player.weapon.bullets, this.suicidalBlobs, this.playerBulletHitSuicidalBlob, null, this);
-
     // Check for player fire on enemy
     this.game.physics.arcade.collide(this.player.weapon.bullets, this.enemies, (bullet, enemy) => {
-      this.deathCircleManager.pushAway(5);
-      enemy.hitByBullet(bullet);
-    }, null, this);
-
-    // Check for player fire on suicidalBlobs
-    this.game.physics.arcade.collide(this.player.weapon.bullets, this.suicidalBlobs, (bullet, enemy) => {
       this.deathCircleManager.pushAway(5);
       enemy.hitByBullet(bullet);
     }, null, this);
@@ -54,12 +46,13 @@ export default class {
       }, null, this);
     });
 
-    //Check if suicidal blobs collides with player
-    this.suicidalBlobs.forEach((suicidalBlob) => {
-      this.game.physics.arcade.collide(this.player, suicidalBlob, (player, suicidalBlob) => {
-                this.deathCircleManager.pullIn(20);
-        suicidalBlob.kill();
-
+    //Check if blobs collide with player
+    this.enemies.forEach((enemy) => {
+      this.game.physics.arcade.collide(this.player, enemy, (player, enemy) => {
+        let playerGotHit = enemy.HitPlayer(player, enemy);
+        if(playerGotHit){
+          this.deathCircleManager.pullIn(20);
+        }
       }, null, this);
     });
 
@@ -161,7 +154,7 @@ export default class {
         player: this.player,
       }));
       else {
-      this.suicidalBlobs.add(new SuicidalBlob({
+      this.enemies.add(new SuicidalBlob({
         game: this.game,
         asset: 'suicidalBlob',
         player: this.player,

@@ -91,4 +91,9 @@ export default class extends Phaser.Sprite {
   dies() {
     this.kill();
   }
+
+  HitPlayer(player, suicidalBlob){
+    suicidalBlob.kill();
+    return true;
+  }
 }

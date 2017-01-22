@@ -90,4 +90,8 @@ export default class extends Phaser.Sprite {
       this.game.deathCircleManager.pushAway(10);
     }
   }
+
+  HitPlayer(){
+    
+  }
 }
