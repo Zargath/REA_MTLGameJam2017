@@ -41,7 +41,6 @@ export default class extends Phaser.State {
     const killCountStyle = { font: 'bold 12pt Arial', fill: fillColor, align: 'center' };
     this.game.raceKillCountText = this.game.add.text(this.game.width - 250, this.game.height - 20, this.killCountText, killCountStyle);
 
-    this.skipButton = this.game.input.keyboard.addKey(Phaser.KeyCode.ENTER);
     this.pressEnterToSkipText = 'Press [Enter] to skip';
     this.enterToSkipText = this.game.add.text(2, document.documentElement.clientHeight - 20, this.pressEnterToSkipText);
     this.enterToSkipText.fill = '#ffffff';
@@ -65,7 +64,7 @@ export default class extends Phaser.State {
   }
 
   render() {
-    if (this.skipButton.isDown) {
+    if (this.game.input.keyboard.addKey(Phaser.KeyCode.ENTER).isDown || this.game.input.activePointer.isDown) {
       this.state.start('GameMenu');
     }
   }
