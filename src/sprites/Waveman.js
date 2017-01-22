@@ -112,7 +112,4 @@ export default class extends Phaser.Sprite {
     this.game.soundManager.playSound('waveman_laser_shot_1', 0.25);
   }
 
-  hitBySuicidalBlob(){
-    this.game.de
-  }
 }
