@@ -84,6 +84,7 @@ export default class {
             // When enemies are all killed
       this.startNextWave();
     } else if (!this.player.alive) {
+      this.game.soundTrackManager.stopSoundTracks();
       this.game.won = false;
       this.game.state.start('GameOver');
     }
@@ -91,6 +92,7 @@ export default class {
 
   checkForGameWon() {
     if (this.currentWave > this.maxWave) {
+      this.game.soundTrackManager.stopSoundTracks();
       this.game.won = true;
       this.game.state.start('GameOver');
     }
