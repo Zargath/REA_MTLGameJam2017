@@ -34,34 +34,23 @@ export default class {
         }
         this.deathCircleActivation = this.game.time.events.loop(Phaser.Timer.SECOND * 0.10, this.generateDeathCircle, this);
         this.deathCircleActivation.timer.start();
-        var fragmentSrc = [
-            "precision mediump float;",
-            // Incoming texture coordinates. 
-            'varying vec2 vTextureCoord;',
-            // Incoming vertex color
-            'varying vec4 vColor;',
-            // Sampler for a) sprite image or b) rendertarget in case of game.world.filter
-            'uniform sampler2D uSampler;',
+    }
 
-            "uniform vec2      resolution;",
-            "uniform float     time;",
-            "uniform vec2      mouse;",
+    deathCircleIsRed(){
+        //TODO
+        if(this.test > 2) {
+        return true;
+        } else {
+            return false;
+        }
 
-            "void main( void ) {",
-            // colorRGBA = (y % 2) * texel(u,v);
-            "gl_FragColor = mod(gl_FragCoord.y,2.0) * texture2D(uSampler, vTextureCoord);",
-            "}"
-        ];
-
-        var scanlineFilter = new Phaser.Filter(this.game, null, fragmentSrc);
-        this.game.world.filters = [scanlineFilter];
     }
 
     pushAway(distance) {
         this.test += 0.001;
         let radius = this.startingRadius * Math.cos(this.test);
-        if(radius < this.startingRadius  ){
-        this.test -= 0.001 * distance;
+        if (radius < this.startingRadius) {
+            this.test -= 0.001 * distance;
         }
     }
 

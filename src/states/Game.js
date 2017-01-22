@@ -6,6 +6,7 @@ import Waveman from '../sprites/Waveman';
 import Background from '../sprites/Background';
 import HUDManager from '../managers/HUDManager';
 import SoundManager from '../managers/SoundManager';
+import SoundTrackManager from '../managers/SoundTrackManager';
 
 
 export default class extends Phaser.State {
@@ -53,6 +54,9 @@ export default class extends Phaser.State {
 
     this.addDeathCircle();
 
+    this.soundTrackManager = new SoundTrackManager({ game: this.game });
+    this.soundTrackManager.startSoundTrack();
+
     this.game.physics.startSystem(Phaser.Physics.ARCADE);
 
     //var scanlineFilter = new Phaser.Filter(this.game, null, game.cache.getShader('stars'));
@@ -65,6 +69,13 @@ export default class extends Phaser.State {
 
     for (var i = 0; i < this.deathCircleManager.deathCircles.length; i++) {
       this.game.physics.arcade.collide(this.player, this.deathCircleManager.deathCircles[i], this.playerDeathCircleCollision, null, this);
+    }
+
+    if (true) {
+      if (this.soundTrackManager.soundtrackHasBeenSet) {
+        this.soundTrackManager.playAlarmingSoundtrack();
+      }
+
     }
   }
 

@@ -39,7 +39,7 @@ export default class extends Phaser.State {
     this.game.load.audio('waveman_intro', 'assets/sounds/music/WaveMan_Intro.mp3', 1, true);
     this.game.load.audio('waveman_is_dying_1', 'assets/sounds/music/WaveMan_IsDying1.mp3', 1, true);
     this.game.load.audio('waveman_is_dying_2', 'assets/sounds/music/WaveMan_IsDying2.mp3', 1, true);
-    this.game.load.audio('waveman_main', 'assets/sounds/music/WaveMan_Complete.mp3', 1, true);
+    this.game.load.audio('waveman_main', 'assets/sounds/music/WaveMan_Main.mp3', 1, true);
     this.game.load.audio('waveman_verse_1', 'assets/sounds/music/WaveMan_Verse1.mp3', 1, true);
     this.game.load.audio('waveman_verse_2', 'assets/sounds/music/WaveMan_Verse2.mp3', 1, true);
     // Load SFX files
