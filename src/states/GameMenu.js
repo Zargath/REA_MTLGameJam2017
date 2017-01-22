@@ -32,6 +32,11 @@ export default class extends Phaser.State {
     this.game.introText.strokeThickness = 6;
 
     this.startButton = this.game.add.button(xPos + 100, yPos + 200, 'button_start', this.goToMenu, this);
+    this.startButton = this.game.add.button(xPos + 100, yPos + 350, 'button_howtoplay', this.goToMenu, this);
+  }
+
+  showHowToPlay() {
+
   }
 
   goToMenu() {

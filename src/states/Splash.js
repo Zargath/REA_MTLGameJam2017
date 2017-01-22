@@ -30,6 +30,7 @@ export default class extends Phaser.State {
     this.load.shader('stars', 'assets/shaders/stars.frag');
 
     this.load.spritesheet('button_start', 'assets/images/start_button.png');
+    this.load.spritesheet('button_howtoplay', 'assets/images/howtoplay_button.png');
   }
 
   create() {
