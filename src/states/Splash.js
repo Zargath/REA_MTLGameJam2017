@@ -25,7 +25,7 @@ export default class extends Phaser.State {
 
     this.load.image('ufo', 'assets/images/ufo.png');
     this.load.image('waveman', 'assets/images/waveman.png');
-    this.load.image('background', 'assets/images/starfield.png');
+    this.load.image('background', 'assets/images/starfield.jpg');
     this.load.shader('stars', 'assets/shaders/stars.frag');
   }
 
