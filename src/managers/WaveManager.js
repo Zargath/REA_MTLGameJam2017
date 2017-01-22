@@ -21,6 +21,10 @@ export default class {
 
     this.powerUps = this.game.add.group();
     this.powerUps.enableBody = true;
+
+    // Controls
+    this.cursors = this.game.input.keyboard.createCursorKeys();
+    this.exitButton = this.game.input.keyboard.addKey(Phaser.KeyCode.ESC);
   }
 
   update() {
@@ -92,6 +96,11 @@ export default class {
 
     // Check for Wave End
     this.checkForWaveEnd();
+
+    // Exit to menu on ESC
+    if (this.exitButton.isDown) {
+      this.game.state.start('GameMenu');
+    }
   }
 
   startNextWave() {
