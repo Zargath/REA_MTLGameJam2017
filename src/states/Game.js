@@ -94,7 +94,12 @@ export default class extends Phaser.State {
   }
 
   playerDeathCircleCollision() {
-    this.game.state.start('Splash');
+    this.player.kill();
+    this.game.time.events.add(Phaser.Timer.SECOND, this.transitionToGameover, this);
+  }
+
+  transitionToGameover() {
+    this.game.state.start('GameOver');
   }
 
   addBackground() {
