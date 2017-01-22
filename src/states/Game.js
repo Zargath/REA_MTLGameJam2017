@@ -123,6 +123,7 @@ export default class extends Phaser.State {
   playerDeathCircleCollision() {
     this.soundTrackManager.stopSoundTracks();
     this.game.state.start('Splash');
+    this.soundManager.playSound('WaveMan_Explosion',1.30);
   }
 
   addBackground() {
