@@ -77,7 +77,7 @@ selectNodeVersion () {
       NODE_EXE=`cat "$DEPLOYMENT_TEMP/__nodeVersion.tmp"`
       exitWithMessageOnError "getting node version failed"
     fi
-
+    
     if [[ -e "$DEPLOYMENT_TEMP/__npmVersion.tmp" ]]; then
       NPM_JS_PATH=`cat "$DEPLOYMENT_TEMP/__npmVersion.tmp"`
       exitWithMessageOnError "getting npm version failed"
@@ -125,3 +125,6 @@ if [ -e "$DEPLOYMENT_TARGET/webpack.config.js" ]; then
   exitWithMessageOnError "webpack failed"
   cd - > /dev/null
 fi
+
+##################################################################################################################################
+echo "Finished successfully."
