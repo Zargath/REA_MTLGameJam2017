@@ -35,7 +35,7 @@ export default class {
       this.game.add.existing(deathCircle);
       this.deathCirclesGroup.add(deathCircle);
     }
-    this.deathCircleActivation = this.game.time.events.loop(Phaser.Timer.SECOND * 0.00001, this.generateDeathCircle, this);
+    this.deathCircleActivation = this.game.time.events.loop(Phaser.Timer.SECOND * 0.1, this.generateDeathCircle, this);
     this.deathCircleActivation.timer.start();
     // setupFilter();
   }

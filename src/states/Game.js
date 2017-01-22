@@ -34,6 +34,19 @@ export default class extends Phaser.State {
     this.enemies = this.game.add.group();
     this.enemies.enableBody = true;
 
+    //  An explosion pool
+    this.explosions = this.game.add.group();
+    this.explosions.enableBody = true;
+    this.explosions.physicsBodyType = Phaser.Physics.ARCADE;
+    this.explosions.createMultiple(30, 'explosion');
+    this.explosions.setAll('anchor.x', 0.5);
+    this.explosions.setAll('anchor.y', 0.5);
+    this.explosions.setAll('scale.x', 0.5);
+    this.explosions.setAll('scale.y', 0.5);
+    this.explosions.forEach((explosion) => {
+      explosion.animations.add('explosion');
+    });
+
     // Custom Timers
     this.stateTimer = this.time.create(false);
 
@@ -64,8 +77,17 @@ export default class extends Phaser.State {
   }
 
   logCollision(bullet, enemy) {
+    const explosion = this.explosions.getFirstExists(false);
+    if (explosion) {
+      explosion.reset(bullet.body.x + bullet.body.halfWidth, bullet.body.y + bullet.body.halfHeight);
+      explosion.body.velocity.y = enemy.body.velocity.y;
+      explosion.alpha = 0.7;
+      explosion.play('explosion', 30, false, true);
+    }
+
     enemy.dies();
     bullet.kill();
+
     this.hudManager.getManager('score').increaseEnemyKillCount();
     this.soundManager.playSoundFromGroup('alien_damage');
     this.deathCircleManager.pushAway(5);
