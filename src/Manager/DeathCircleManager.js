@@ -38,7 +38,8 @@ export default class {
 
     deathCircleIsRed(){
         //TODO
-        if(this.test > 2) {
+        var test = this.startingRadius * Math.cos(this.test) ;
+        if(test < 500.0) {
         return true;
         } else {
             return false;

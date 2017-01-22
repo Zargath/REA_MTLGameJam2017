@@ -71,13 +71,12 @@ export default class extends Phaser.State {
       this.game.physics.arcade.collide(this.player, this.deathCircleManager.deathCircles[i], this.playerDeathCircleCollision, null, this);
     }
 
-    if (true) {
-      if (this.soundTrackManager.soundtrackHasBeenSet) {
+    if (this.deathCircleManager.deathCircleIsRed()) {  
         this.soundTrackManager.playAlarmingSoundtrack();
       }
 
     }
-  }
+  
 
   logCollision(bullet, enemy) {
     enemy.dies()
