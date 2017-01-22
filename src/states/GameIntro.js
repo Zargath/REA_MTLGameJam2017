@@ -30,8 +30,24 @@ export default class extends Phaser.State {
     this.game.introText.stroke = strokeColor;
     this.game.introText.strokeThickness = 6;
 
+    this.skipButton = this.game.input.keyboard.addKey(Phaser.KeyCode.ENTER);
+
     this.introSkipAuto = this.game.time.events.loop(Phaser.Timer.SECOND * 18, this.goToMenu, this);
     this.introSkipAuto.timer.start();
+
+    this.pressEnterToSkipText = 'Press [Enter] to skip';
+    this.enterToSkipText = this.game.add.text(2, document.documentElement.clientHeight - 20, this.pressEnterToSkipText);
+    this.enterToSkipText.fill = '#ffffff';
+    this.enterToSkipText.fontSize = '11pt';
+
+    this.pressEnterTimer = this.game.time.events.loop(Phaser.Timer.SECOND * 0.8, this.toggleText, this);
+    this.pressEnterTimer.timer.start();
+
+    this.pressEnterTextIsVisible = true;
+  }
+
+  toggleText() {
+    this.enterToSkipText.visible = !this.enterToSkipText.visible;
   }
 
   goToMenu() {
@@ -40,6 +56,9 @@ export default class extends Phaser.State {
 
   update() {
     this.game.introText.y -= 1;
+    if (this.skipButton.isDown) {
+      this.state.start('GameMenu');
+    }
   }
 
   render() {

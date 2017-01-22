@@ -1,10 +1,11 @@
 import Phaser from 'phaser';
+import SoundManager from '../managers/SoundManager'
 
 export default class extends Phaser.Sprite {
 
-  constructor({ game }) {
+  constructor({ game, soundManager }) {
     super(game, game.world.centerX, game.world.centerY, 'waveman');
-
+    this.soundManager = soundManager;
     this.game = game;
 
     this.maxSpeed = 300;
@@ -57,6 +58,11 @@ export default class extends Phaser.Sprite {
 
     if (this.fireButton.isDown) {
       this.weapon.fire();
+      this.weapon.onFire.add(this.fireLaserSound, this);
     }
+  }
+
+  fireLaserSound(){
+        this.soundManager.playSound('waveman_laser_shot_1', 0.25);
   }
 }

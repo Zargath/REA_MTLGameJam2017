@@ -117,10 +117,12 @@ export default class extends Phaser.State {
 
     bullet.kill();
     this.deathCircleManager.pullIn(10);
+    this.soundManager.playSound('waveman_weird_alien_noise_3', 1.30);
   }
 
   playerDeathCircleCollision() {
     this.player.kill();
+    this.soundManager.playSound('WaveMan_Explosion', 1.30);
     this.game.time.events.add(Phaser.Timer.SECOND, this.transitionToGameover, this);
   }
 
@@ -147,7 +149,7 @@ export default class extends Phaser.State {
   }
 
   addPlayer() {
-    this.player = new Waveman({ game: this.game });
+    this.player = new Waveman({ game: this.game, soundManager: this.soundManager });
     this.game.add.existing(this.player);
   }
 

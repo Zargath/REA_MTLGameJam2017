@@ -11,7 +11,6 @@ export default class {
         this.soundTracks.set('waveman_main', this.game.add.audio('waveman_main'));
         this.soundTracks.set('waveman_verse_1', this.game.add.audio('waveman_verse_1'));
         this.soundTracks.set('waveman_verse_2', this.game.add.audio('waveman_verse_2'));
-        //this.soundTracks.set();
     }
 
     startSoundTrack() {
