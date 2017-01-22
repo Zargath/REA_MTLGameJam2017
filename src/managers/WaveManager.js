@@ -46,7 +46,7 @@ export default class {
             }
       this.enemyDeathToPowerUp++;
       let rndNumber = game.rnd.integerInRange(0, 100);
-      if (enemy.isDead && rndNumber > 80) {
+      if (enemy.isDead && rndNumber > 95) {
         this.powerUps.add(new PowerUp({
           game: this.game, 
           asset: 'red_gem', 
