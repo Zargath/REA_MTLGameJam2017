@@ -2,6 +2,7 @@ import Phaser from 'phaser';
 import Blob from '../sprites/Blob';
 import Waveman from '../sprites/Waveman';
 import DeathCircleManager from '../managers/DeathCircleManager';
+import SuicidalBlob from '../sprites/SuicidalBlob'
 
 export default class {
   constructor({ game, hudManager }) {
@@ -13,22 +14,34 @@ export default class {
     this.currentWave = 0;
     this.maxWave = 3;
 
-        // Groups
+    // Groups
     this.enemies = this.game.add.group();
     this.enemies.enableBody = true;
+
+    this.suicidalBlobs = this.game.add.group();
+    this.suicidalBlobs.enableBody = true;
   }
 
   update() {
     // Update score board
-    this.hudManager.getManager('score').setEnemyCount(this.enemies.countLiving());
+    let enemyKillCount = this.enemies.countLiving() + this.suicidalBlobs.countLiving();
+    this.hudManager.getManager('score').setEnemyCount(enemyKillCount);
     this.hudManager.getManager('score').setCurrentWave(this.currentWave);
 
     if (!this.hasWaveInProgress) {
       return;
     }
 
+    this.game.physics.arcade.collide(this.player.weapon.bullets, this.suicidalBlobs, this.playerBulletHitSuicidalBlob, null, this);
+
     // Check for player fire on enemy
     this.game.physics.arcade.collide(this.player.weapon.bullets, this.enemies, (bullet, enemy) => {
+      this.deathCircleManager.pushAway(5);
+      enemy.hitByBullet(bullet);
+    }, null, this);
+
+    // Check for player fire on suicidalBlobs
+    this.game.physics.arcade.collide(this.player.weapon.bullets, this.suicidalBlobs, (bullet, enemy) => {
       this.deathCircleManager.pushAway(5);
       enemy.hitByBullet(bullet);
     }, null, this);
@@ -38,6 +51,15 @@ export default class {
       this.game.physics.arcade.collide(this.player, enemy.weapon.bullets, (player, bullet) => {
         this.deathCircleManager.pullIn(10);
         player.hitByBullet(bullet);
+      }, null, this);
+    });
+
+    //Check if suicidal blobs collides with player
+    this.suicidalBlobs.forEach((suicidalBlob) => {
+      this.game.physics.arcade.collide(this.player, suicidalBlob, (player, suicidalBlob) => {
+                this.deathCircleManager.pullIn(20);
+        suicidalBlob.kill();
+
       }, null, this);
     });
 
@@ -84,7 +106,7 @@ export default class {
 
   checkForWaveEnd() {
     if (this.enemies.countLiving() <= 0) {
-            // When enemies are all killed
+      // When enemies are all killed
       this.startNextWave();
     } else if (!this.player.alive) {
       this.game.soundTrackManager.stopSoundTracks();
@@ -113,7 +135,7 @@ export default class {
 
   createOrResetDeathCircle() {
     if (this.deathCircleManager) {
-            // reset circle
+      // reset circle
     } else {
       this.deathCircleManager = new DeathCircleManager({
         game: this.game,
@@ -126,17 +148,26 @@ export default class {
   }
 
   createEnemies() {
-        // This will destroy all enemies.
+    // This will destroy all enemies.
     this.enemies.removeAll(true);
-    
+
     // Add blobs
     let blobNum = 5 + this.dificultyLvl * 10;
-    for(let i = 0; i < blobNum; i++){
+    for (let i = 0; i < blobNum; i++) {
+      if(i % 2 == 0)
       this.enemies.add(new Blob({
         game: this.game,
         asset: 'ufo',
         player: this.player,
       }));
+      else {
+      this.suicidalBlobs.add(new SuicidalBlob({
+        game: this.game,
+        asset: 'suicidalBlob',
+        player: this.player,
+      }));
+      }
+
     }
   }
 
