@@ -8,18 +8,17 @@ export default class {
   }
 
   initialize() {
-    const scoreManager = new ScoreManager();
-    this.game.scoreText = this.game.add.text(10, 10, scoreManager.getScoreString());
-    this.game.scoreText.boundsAlignH = 'left';
-    this.game.font = 'Nunito';
-    this.game.scoreText.fontSize = 60;
-    this.game.scoreText.fill = '#FF0000';
-
+    const scoreManager = new ScoreManager({ game: this.game });
     this.addManager('score', scoreManager);
   }
 
   update() {
-    this.game.scoreText.text = this.getManager('score').getScoreString();
+    const mapIter = this.managers.values();
+    let value = mapIter.next().value;
+    while (value) {
+      value.update();
+      value = mapIter.next().value;
+    }
   }
 
   addManager(key, manager) {
