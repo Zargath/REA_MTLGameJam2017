@@ -48,11 +48,11 @@ export default class extends Phaser.Sprite {
     }
   }
 
-  shootPlayer(){
+  shootPlayer() {
     this.weapon.fireAtSprite(this.player);
   }
 
-  move(){
+  move() {
     const distanceToPlayer = this.game.physics.arcade.distanceBetween(this, this.player);
 
     if (distanceToPlayer < 300 && !this.movingRand) {
@@ -68,7 +68,7 @@ export default class extends Phaser.Sprite {
     }
   }
 
-  hitByBullet(bullet){
+  hitByBullet(bullet) {
     const explosion = this.explosions.getFirstExists(false);
     if (explosion) {
       explosion.reset(bullet.body.x + bullet.body.halfWidth, bullet.body.y + bullet.body.halfHeight);
@@ -86,7 +86,7 @@ export default class extends Phaser.Sprite {
   dies() {
     this.kill();
 
-    if (typeof this.game.deathCircleManager != 'undefined') {
+    if (typeof this.game.deathCircleManager !== 'undefined') {
       this.game.deathCircleManager.pushAway(10);
     }
   }
