@@ -61,4 +61,8 @@ export default class {
         this.currentTrack.play('first', null, this.soundTrackVolume, true);
         this.alarmSoundtrackHasBeenSet = false;
     }
+
+    stopSoundTracks(){
+        this.currentTrack.stop();
+    }
 }

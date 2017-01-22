@@ -120,6 +120,7 @@ export default class extends Phaser.State {
   }
 
   playerDeathCircleCollision() {
+    this.soundTrackManager.stopSoundTracks();
     this.game.state.start('Splash');
   }
 
