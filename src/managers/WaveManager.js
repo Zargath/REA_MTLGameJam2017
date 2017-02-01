@@ -13,7 +13,7 @@ export default class {
     this.hasWaveInProgress = false;
     this.dificultyLvl = 0;
     this.currentWave = 0;
-    this.maxWave = 3;
+    this.maxWave = 5;
 
     // Groups
     this.enemies = this.game.add.group();
